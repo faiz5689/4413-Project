@@ -1,6 +1,6 @@
 # 4413-Project
 
-# Lessons
+# Task Actions
 
 1. Creating React App
 2. Working with Git
