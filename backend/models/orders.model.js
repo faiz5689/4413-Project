@@ -10,6 +10,7 @@ const orderSchema = new Schema(
           quantity: { type: Number, required: true },
           image: { type: String, required: true },
           price: { type: Number, required: true },
+          loyaltyPoints {type: Number, required: true},
           product: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product',
