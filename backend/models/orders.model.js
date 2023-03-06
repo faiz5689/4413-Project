@@ -13,7 +13,7 @@ const orderSchema = new Schema(
           loyaltyPoints {type: Number, required: true},
           product: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product',
+            ref: 'Inventory',
             required: true,
           },
         },
