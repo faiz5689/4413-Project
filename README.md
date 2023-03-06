@@ -2,5 +2,5 @@
 
 # Lessons
 
-1. 1st draft
-2. 2nd draft
+1. Creating React App
+2. Working with Git
