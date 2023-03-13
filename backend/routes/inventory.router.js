@@ -15,8 +15,20 @@ inventoryRouter.get(
         let filterColour = req.query.colour;
         let filterBrand = req.query.brand;
         let filterCategory = req.query.cat;
+        let sortingParam = req.query.sort;
+
+        // + is ascending sort, - is descending
+        // eg.(-price = highest to lowest price)
+        //    ( price = lowest to highest price)
+        //    ( name  = A -> Z)
+        //    (-name  = Z -> A)
 
         let dbQuery = [];
+
+        if (sortingParam === undefined)
+        {
+            sortingParam = { $natural: 1 };
+        }
 
         if (filterColour !== undefined)
         {
@@ -32,7 +44,7 @@ inventoryRouter.get(
         }
 
         try {
-            const returnProducts = await Inventory.find({ $and: dbQuery });
+            const returnProducts = await Inventory.find({ $and: dbQuery }).sort(sortingParam);
     
             res.status(201).json({
                 success: true,
@@ -42,6 +54,7 @@ inventoryRouter.get(
         } catch (error) {
             console.log(error);
             console.log(dbQuery);
+            console.log(sortingParam);
             next(error);
     
         }
