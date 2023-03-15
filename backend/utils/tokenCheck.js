@@ -20,7 +20,8 @@ export const isAuth = (req, res, next) => {
       res.status(401).send({ message: 'No Token. Please Try Again!' });
     }
   };
-  export const isAdmin = (req, res, next) => {
+  
+export const isAdmin = (req, res, next) => {
     if (req.customer && req.customer.isAdmin) {
       next();
     } else {

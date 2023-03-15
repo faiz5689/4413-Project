@@ -23,6 +23,7 @@ const inventorySchema = new Schema(
         category: { type: String, required: true },
         brand: { type: String, required: true },
         numberInStock: { type: Number, required: true },
+        loyaltyValue: {type: Number, required: true},
         rating: { type: Number, required: true },
         reviewNumber: { type: Number, required: true },
         reviews: [reviewSchema]

@@ -15,12 +15,21 @@ customerRouter.post(
     {
       if (bcrypt.compareSync(req.body.password, customer.password)) 
       {
+        const newToken = tokenGenAndSign(customer);
+        const cookieOptions = {
+            expires: new Date(
+                Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+            ),
+            httpOnly: true
+        }
+        // Maybe also add redirect to home here??
+        res.cookie('token', newToken, cookieOptions);
         res.send({
           _id: customer._id,
           name: customer.name,
           username: customer.username,
           isAdmin: customer.isAdmin,
-          token: tokenGenAndSign(customer),
+          token: newToken,
         });
         return;
       }
@@ -45,5 +54,16 @@ customerRouter.post('/register',
     });
   })
 );
+
+customerRouter.get('/logout',
+expressAsyncHandler(async(req, res) => {
+    // Redirect here, just like login
+    res.clearCookie('token');
+    res.status(200).json({
+        success: true,
+        message: "Logged out"
+    });
+  })
+); 
 
 export default customerRouter;

@@ -63,4 +63,12 @@ inventoryRouter.get(
     })
 );
 
+inventoryRouter.get(
+    '/recommended',
+    expressAsyncHandler(async (req, res, next) => {
+        const recommendedItems = await Inventory.find({}).sort({rating: -1}).limit(5);
+        res.send(recommendedItems);
+    })
+);
+
 export default inventoryRouter;
