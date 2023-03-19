@@ -2,6 +2,7 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
 import Customer from '../models/customers.model.js';
+import Cart from '../models/cart.model.js';
 import { isAdmin, isAuth } from '../utils/tokenCheck.js';
 import { tokenGenAndSign } from '../utils/jwtAuth.js';
 
@@ -12,17 +13,15 @@ customerRouter.post(
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ username: req.body.username });
     console.log(customer);
-    if (customer) 
-    {
-      if (bcrypt.compareSync(req.body.password, customer.password)) 
-      {
+    if (customer) {
+      if (bcrypt.compareSync(req.body.password, customer.password)) {
         const newToken = tokenGenAndSign(customer);
         const cookieOptions = {
-            expires: new Date(
-                Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-            ),
-            httpOnly: true
-        }
+          expires: new Date(
+            Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+          ),
+          httpOnly: true,
+        };
         // Maybe also add redirect to home here??
         res.cookie('token', newToken, cookieOptions);
         res.send({
@@ -46,11 +45,12 @@ customerRouter.post(
     {
        return res.status(404).send({message: "User does not exist"});
     }
-    res.status(401).send({ message: "Invalid email or password" });
+    res.status(401).send({ message: 'Invalid email or password' });
   })
 );
 
-customerRouter.post('/register',
+customerRouter.post(
+  '/register',
   expressAsyncHandler(async (req, res) => {
     const doesUserExist = await Customer.findOne({ username: req.body.username });
     if (!doesUserExist)
@@ -93,15 +93,35 @@ customerRouter.post('/register',
   })
 );
 
-customerRouter.get('/logout',
-expressAsyncHandler(async(req, res) => {
+customerRouter.get(
+  '/logout',
+  expressAsyncHandler(async (req, res) => {
     // Redirect here, just like login
     res.clearCookie('token');
     res.status(200).json({
-        success: true,
-        message: "Logged out"
+      success: true,
+      message: 'Logged out',
     });
   })
-); 
+);
+
+//adds product to cart
+customerRouter.get(
+  '/add-to-cart/:id',
+  expressAsyncHandler(async (req, res) => {
+    const cart = new Cart({
+      username: req.body.username,
+      products: req.body.products,
+    });
+    const createdCart = await cart.save();
+    res.send({
+      _id: createdCustomer._id,
+      name: createdCustomer.name,
+      username: createdCustomer.username,
+      isAdmin: createdCustomer.isAdmin,
+      token: tokenGenAndSign(createdCustomer),
+    });
+  })
+);
 
 export default customerRouter;
