@@ -34,6 +34,17 @@ customerRouter.post(
         });
         return;
       }
+      else
+      {
+        return res.status(401).send({
+            token: null,
+            message: "Invalid password!"
+        });
+      }
+    }
+    else
+    {
+       return res.status(404).send({message: "User does not exist"});
     }
     res.status(401).send({ message: "Invalid email or password" });
   })
@@ -41,18 +52,44 @@ customerRouter.post(
 
 customerRouter.post('/register',
   expressAsyncHandler(async (req, res) => {
-    const customer = new Customer({
-      username: req.body.username,
-      password: bcrypt.hashSync(req.body.password, 8),
-    });
-    const createdCustomer = await customer.save();
-    res.send({
-      _id: createdCustomer._id,
-      name: createdCustomer.name,
-      username: createdCustomer.username,
-      isAdmin: createdCustomer.isAdmin,
-      token: tokenGenAndSign(createdCustomer),
-    });
+    const doesUserExist = await Customer.findOne({ username: req.body.username });
+    if (!doesUserExist)
+    {
+        var pwRegExp = new RegExp (/(?=[A-Za-z0-9@#$%^&+!=]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+!=])(?=.{8,}).*$/);
+        var isPwLegal = pwRegExp.test(req.body.password);
+
+        if (isPwLegal)
+        {
+            const customer = new Customer({
+                name: req.body.name,
+                username: req.body.username,
+                password: bcrypt.hashSync(req.body.password, 8),
+                loyaltyPoints: 0,
+                isAdmin: false,
+              });
+    
+              const createdCustomer = await customer.save()
+              .then();
+              res.send({
+                _id: createdCustomer._id,
+                name: createdCustomer.name,
+                username: createdCustomer.username,
+                isAdmin: createdCustomer.isAdmin,
+              });
+        }
+        else
+        {
+            return res.status(401).send({
+                token: null,
+                message: "Invalid password!"
+            });
+        }
+    }
+    else
+    {
+        return res.status(404).send({message: "User already exists"});
+    }
+
   })
 );
 
