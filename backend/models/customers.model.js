@@ -4,14 +4,15 @@ const Schema = mongoose.Schema;
 
 const customerSchema = new Schema(
     {
-      name: { type: String, required: true },
-      username: {type: String, required: true, unique: true},
+      //commented out for testing purposes. So far, the customer only registers using username and pass
+      // name: { type: String, required: true , default:""},
+      username: {type: String, required: true, unique: true,},
       password: { type: String, required: true, match: [
         /^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]+$/,
         'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and a special character']
        },
       isAdmin: { type: Boolean, default: false, required: true },
-      loyaltyPoints: {type: Number, required: true},
+      // loyaltyPoints: {type: Number, required: true,},
       pastOrders: [
         {
           name: { type: String, required: true },
