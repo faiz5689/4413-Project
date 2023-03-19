@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
 import Checkout from './pages/checkout/checkout';
-
+import Chat from './Component/Chat';
 
 function App() {
   return (
@@ -20,6 +20,7 @@ function App() {
         <Route path='/checkout' element={<Checkout/>}/>
       </Routes>
       </BrowserRouter>
+      <Chat />
     </div>
   );
 }
