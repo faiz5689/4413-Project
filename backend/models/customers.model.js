@@ -12,22 +12,16 @@ const customerSchema = new Schema(
     loyaltyPoints: { type: Number, required: true },
     pastOrders: [
       {
-        name: { type: String, required: true },
-        quantity: { type: Number, required: true },
-        image: { type: String, required: true },
-        price: { type: Number, required: true },
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Inventory',
-          required: true,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Order',
+        required: true,    
       },
     ],
     cart: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Inventory',
-        required: true,
+        required: true,    
       },
     ],
   },
@@ -35,5 +29,17 @@ const customerSchema = new Schema(
     timestamps: true,
   }
 );
+
+customerSchema.methods.getCartPrice = async (cust) => {
+  // console.log("Method A");
+  let customerCart = await cust.cart;
+  let cost = 0;
+  for (let i=0; i < customerCart.length; i++) {
+    const product = await Inventory.findOne({ _id: customerCart[i]}); //finds product with given name
+    cost += product.price;
+  }
+  return cost;
+} 
+
 const User = mongoose.model('Customer', customerSchema);
 export default User;
