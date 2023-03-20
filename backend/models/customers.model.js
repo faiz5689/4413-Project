@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Inventory from './inventory.model.js';
 
 const Schema = mongoose.Schema;
 
@@ -24,15 +25,9 @@ const customerSchema = new Schema(
     ],
     cart: [
       {
-        name: { type: String, required: true },
-        quantity: { type: Number, required: true },
-        image: { type: String, required: true },
-        price: { type: Number, required: true },
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Inventory',
-          required: true,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Inventory',
+        required: true,
       },
     ],
   },

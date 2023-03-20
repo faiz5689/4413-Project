@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import Customer from '../models/customers.model.js';
 import { isAdmin, isAuth } from '../utils/tokenCheck.js';
 import { tokenGenAndSign } from '../utils/jwtAuth.js';
+import Inventory from '../models/inventory.model.js';
 
 const customerRouter = express.Router();
 
@@ -84,15 +85,6 @@ customerRouter.post(
   })
 );
 
-customerRouter.post(
-  '/add-to-cart/:id',
-  expressAsyncHandler(async (req, res) => {
-    const customer = await Customer.findOne({ username: req.body.username });
-    customer.cart.push('whatever product');
-    res.send('Item was added to cart');
-  })
-);
-
 customerRouter.get(
   '/logout',
   expressAsyncHandler(async (req, res) => {
@@ -102,6 +94,50 @@ customerRouter.get(
       success: true,
       message: 'Logged out',
     });
+  })
+);
+
+//put request to add item to cart
+customerRouter.post(
+  '/add-to-cart/:id',
+  expressAsyncHandler(async (req, res) => {
+    const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
+    var cartCust = customer.cart;
+    const product = await Inventory.findOne({ name: req.body.name }); //finds product with given name
+
+    //add item to customer's cart
+    cartCust.push(product);
+
+    //update database
+    await Customer.updateOne(
+      { _id: customer._id },
+      { $set: { cart: cartCust } }
+    );
+
+    //send entire customer
+    res.send(customer);
+  })
+);
+
+//put request to add item to cart
+customerRouter.post(
+  '/remove-from-cart/:id',
+  expressAsyncHandler(async (req, res) => {
+    const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
+    var cartCust = customer.cart;
+    const product = await Inventory.findOne({ name: req.body.name }); //finds product with given name
+
+    //remove item to customer's cart
+    cartCust.remove(product);
+
+    //update database
+    await Customer.updateOne(
+      { _id: customer._id },
+      { $set: { cart: cartCust } }
+    );
+
+    //send entire customer
+    res.send(customer);
   })
 );
 
