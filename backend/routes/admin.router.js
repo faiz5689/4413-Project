@@ -6,6 +6,7 @@ import Inventory from '../models/inventory.model.js';
 
 const adminRouter = express.Router();
 
+//Returns a general sales report displaying the revenue in the past month
 adminRouter.get(
   '/run-general-sales-report/:id',
   expressAsyncHandler(async (req, res) => {
@@ -48,10 +49,15 @@ adminRouter.get(
   })
 );
 
+//Returns a specific sales report grouped by individual sunglasses, the quantity sold and the revenue each generated
 adminRouter.get(
   '/run-sales-report-specific/:id',
   expressAsyncHandler(async (req, res) => {
     const user = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
+    const month = parseInt(req.body.month);
+    const year = parseInt(req.body.year);
+    console.log(month);
+    console.log(year);
 
     //Check if user is admin
     if (user.isAdmin) {
@@ -77,6 +83,14 @@ adminRouter.get(
           $addFields: {
             month: { $month: '$createdAt' },
             year: { $year: '$createdAt' },
+          },
+        },
+
+        // Filter based on the user input month and year
+        {
+          $match: {
+            month: month,
+            year: year,
           },
         },
 
