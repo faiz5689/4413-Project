@@ -14,14 +14,14 @@ const customerSchema = new Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Order',
-        required: true,    
+        required: true,
       },
     ],
     cart: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Inventory',
-        required: true,    
+        required: true,
       },
     ],
   },
@@ -34,12 +34,12 @@ customerSchema.methods.getCartPrice = async (cust) => {
   // console.log("Method A");
   let customerCart = await cust.cart;
   let cost = 0;
-  for (let i=0; i < customerCart.length; i++) {
-    const product = await Inventory.findOne({ _id: customerCart[i]}); //finds product with given name
+  for (let i = 0; i < customerCart.length; i++) {
+    const product = await Inventory.findOne({ _id: customerCart[i] }); //finds product with given name
     cost += product.price;
   }
   return cost;
-} 
+};
 
 const User = mongoose.model('Customer', customerSchema);
 export default User;
