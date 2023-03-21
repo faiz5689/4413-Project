@@ -44,7 +44,16 @@ inventoryRouter.get(
         }
 
         try {
-            const returnProducts = await Inventory.find({ $and: dbQuery }).sort(sortingParam);
+            var returnProducts;
+            
+            if (dbQuery.length == 0)
+            {
+                returnProducts = await Inventory.find({}).sort(sortingParam);
+            }
+            else
+            {
+                returnProducts = await Inventory.find({ $and: dbQuery }).sort(sortingParam);
+            }
     
             res.status(201).json({
                 success: true,

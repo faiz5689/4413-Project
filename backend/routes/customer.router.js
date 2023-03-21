@@ -17,19 +17,20 @@ customerRouter.post(
       if (bcrypt.compareSync(req.body.password, customer.password)) {
         const newToken = tokenGenAndSign(customer);
         const cookieOptions = {
-          expires: new Date(
-            Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-          ),
-          httpOnly: true,
-        };
+            expires: new Date(
+                Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+            ),
+              domain: 'localhost',
+              httpOnly: true,
+              sameSite: 'Strict',
+              secure: true,
+        }
         // Maybe also add redirect to home here??
         res.cookie('token', newToken, cookieOptions);
         res.send({
           _id: customer._id,
-          name: customer.name,
           username: customer.username,
           isAdmin: customer.isAdmin,
-          token: newToken,
         });
         return;
       } else {
@@ -41,7 +42,6 @@ customerRouter.post(
     } else {
       return res.status(404).send({ message: 'User does not exist' });
     }
-    res.status(401).send({ message: 'Invalid email or password' });
   })
 );
 
@@ -57,30 +57,33 @@ customerRouter.post(
       );
       var isPwLegal = pwRegExp.test(req.body.password);
 
-      if (isPwLegal) {
-        const customer = new Customer({
-          name: req.body.name,
-          username: req.body.username,
-          password: bcrypt.hashSync(req.body.password, 8),
-          loyaltyPoints: 0,
-          isAdmin: false,
-        });
-
-        const createdCustomer = await customer.save().then();
-        res.send({
-          _id: createdCustomer._id,
-          name: createdCustomer.name,
-          username: createdCustomer.username,
-          isAdmin: createdCustomer.isAdmin,
-        });
-      } else {
-        return res.status(401).send({
-          token: null,
-          message: 'Invalid password!',
-        });
-      }
-    } else {
-      return res.status(404).send({ message: 'User already exists' });
+        if (isPwLegal)
+        {
+            const customer = new Customer({
+                name: req.body.name,
+                username: req.body.username,
+                password: bcrypt.hashSync(req.body.password, 8),
+                loyaltyPoints: 0,
+                isAdmin: false,
+              });
+    
+              const createdCustomer = await customer.save()
+              .then();
+              res.send({
+                name: createdCustomer.name,
+              });
+        }
+        else
+        {
+            return res.status(401).send({
+                token: null,
+                message: "Invalid password!"
+            });
+        }
+    }
+    else
+    {
+        return res.status(404).send({message: "User already exists"});
     }
   })
 );
