@@ -63,7 +63,7 @@ customerRouter.post(
           username: req.body.username,
           password: bcrypt.hashSync(req.body.password, 8),
           loyaltyPoints: 0,
-          // isAdmin: false,
+          // // isAdmin: false,
         });
 
         const createdCustomer = await customer.save().then();
@@ -97,6 +97,7 @@ customerRouter.get(
   })
 );
 
+//post request to add item to cart
 //post request to add item to cart
 customerRouter.post(
   '/add-to-cart/:id',
