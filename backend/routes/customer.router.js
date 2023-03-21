@@ -105,6 +105,10 @@ customerRouter.post(
     var cartCust = customer.cart;
     const product = await Inventory.findOne({ name: req.body.name }); //finds product with given name
 
+    //handle error
+    if (product == null) {
+      res.send('Cannot add to cart. Please select a valid product');
+    }
     //add item to customer's cart
     cartCust.push(product);
 
@@ -126,6 +130,11 @@ customerRouter.post(
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;
     const product = await Inventory.findOne({ name: req.body.name }); //finds product with given name
+
+    //handle error
+    if (product == null) {
+      res.send('Cannot remove from cart. Please select a valid product');
+    }
 
     //remove item to customer's cart
     cartCust.remove(product);
