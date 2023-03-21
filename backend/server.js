@@ -33,7 +33,6 @@ server.use('/api/users', customerRouter);
 server.use('/api/inventory', inventoryRouter);
 server.use('/api/orders', ordersRouter);
 server.use('/api/admin', adminRouter);
-server.use('/api/admin', adminRouter);
 
 server.get('/', (req, res) => {
   res.send('Server is ready');

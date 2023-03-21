@@ -7,20 +7,12 @@ import Inventory from '../models/inventory.model.js';
 const adminRouter = express.Router();
 
 adminRouter.get(
-  '/run-sales-report/:id',
+  '/run-general-sales-report/:id',
   expressAsyncHandler(async (req, res) => {
     const user = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
 
     //Check if user is admin
     if (user.isAdmin) {
-      // const findResult = await Order.find({
-      //     createdAt: {
-      //         //new date object for the current date subtracting a month, in milliseconds
-      //         $gte: new Date(new Date().getTime() - 1000 * 3600 * 24 * 30),
-      //         //current date at time of query
-      //         $lt: new Date(),
-      //       },
-      // })
       const aggResult = await Order.aggregate([
         // First Stage
         {
@@ -49,10 +41,86 @@ adminRouter.get(
       ]);
 
       console.log(aggResult);
-      // console.log(findResult);
-      //number of orders in past month
-      // console.log("You sold this many items: " + findResult.length);
-      // console.log(findResult[0]._id
+      res.send(aggResult);
+    } else {
+      res.send('You have to be an admin to run a report on sales');
+    }
+  })
+);
+
+adminRouter.get(
+  '/run-sales-report-specific/:id',
+  expressAsyncHandler(async (req, res) => {
+    const user = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
+
+    //Check if user is admin
+    if (user.isAdmin) {
+      const aggResult = await Order.aggregate([
+        // Unwind the orderItems array to create a separate document for each item
+        { $unwind: '$orderItems' }, //Go through every orderItem document and unwinds (displays in table)
+
+        // Lookup the inventory item for each order item
+        {
+          $lookup: {
+            from: 'inventories',
+            localField: 'orderItems',
+            foreignField: '_id',
+            as: 'item',
+          },
+        },
+
+        // Unwind the item array to create a separate document for each item
+        { $unwind: '$item' },
+
+        // Extract the month and year from the createdAt field
+        {
+          $addFields: {
+            month: { $month: '$createdAt' },
+            year: { $year: '$createdAt' },
+          },
+        },
+
+        // Group by item, month, and year and calculate the quantity and revenue
+        {
+          $group: {
+            _id: { item: '$item._id', month: '$month', year: '$year' },
+            quantity: { $sum: 1 },
+            revenue: { $sum: { $multiply: ['$item.price', 1.0] } },
+          },
+        },
+
+        // Lookup the inventory item again to include its fields in the output
+        {
+          $lookup: {
+            from: 'inventories',
+            localField: '_id.item',
+            foreignField: '_id',
+            as: 'item',
+          },
+        },
+
+        // Unwind the item array to merge it with the group document
+        { $unwind: '$item' },
+
+        // Project the output fields
+        {
+          $project: {
+            item: '$item.name',
+            month: '$_id.month',
+            year: '$_id.year',
+            quantity: 1,
+            revenue: 1,
+            _id: 0,
+          },
+        },
+        //order in descending order (to display the highest revenue at the top)
+        {
+          $sort: {
+            revenue: -1,
+          },
+        },
+      ]);
+
       res.send(aggResult);
     } else {
       res.send('You have to be an admin to run a report on sales');
