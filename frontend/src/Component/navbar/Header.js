@@ -27,7 +27,7 @@ const Header = () => {
         // </div>
 
         <React.Fragment>
-            <AppBar position= "sticky" sx={{background: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 13%, rgba(0,212,255,1) 100%)"}}>
+            <AppBar position= "sticky" sx={{background: "linear-gradient(109.6deg, rgb(9, 9, 121) 11.2%, rgb(144, 6, 161) 53.7%, rgb(0, 212, 255) 100.2%)"}}>
                 <Toolbar>
                     <Icon icon="mdi:glasses" width="50" height="50" />
                     <Typography sx={{marginLeft:"10px"}}>
@@ -38,7 +38,7 @@ const Header = () => {
                             textColor="inherit"
                             value={value} 
                             onChange={(e,value)=> setValue(value)} 
-                            indicatorColor="secondary">
+                            TabIndicatorProps={{ style: { background: "#FADA5E" } } }>
                                 <Tab component={Link} to="/" label="Home"></Tab>
                                 <Tab component={Link} to="/products" label="Products"></Tab>
                                 <Tab component={Link} to="/checkout" label="Checkout"></Tab>
