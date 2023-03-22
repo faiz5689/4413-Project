@@ -41,5 +41,11 @@ customerSchema.methods.getCartPrice = async (cust) => {
   return cost;
 };
 
+customerSchema.methods.getCartPriceInLoyaltyPoints = async (cust) => {
+  console.log('We are here');
+  let cost = cust.getCartPrice(cust);
+  return cost * 10;
+};
+
 const User = mongoose.model('Customer', customerSchema);
 export default User;
