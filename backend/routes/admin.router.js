@@ -41,7 +41,6 @@ adminRouter.get(
         },
       ]);
 
-      console.log(aggResult);
       res.send(aggResult);
     } else {
       res.send('You have to be an admin to run a report on sales');
@@ -56,8 +55,6 @@ adminRouter.get(
     const user = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     const month = parseInt(req.body.month);
     const year = parseInt(req.body.year);
-    console.log(month);
-    console.log(year);
 
     //Check if user is admin
     if (user.isAdmin) {
