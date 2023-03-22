@@ -150,4 +150,89 @@ customerRouter.post(
   })
 );
 
+//post request to change username
+customerRouter.post(
+  '/change-username/:id',
+  expressAsyncHandler(async (req, res) => {
+    //Before starting: get user by ID
+    const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
+
+    //First, extract the new username
+    const newUsername = req.body.newUsername;
+
+    //Check if newUsername is taken
+    const customerFind = await Customer.findOne({ username: newUsername });
+
+    //if username is not taken
+    if (customerFind === null) {
+      //Now, update the database
+      await Customer.updateOne(
+        { _id: customer._id },
+        { $set: { username: newUsername } }
+      );
+    }
+
+    res.send('New user is: ' + newUsername);
+  })
+);
+
+//post request to change Name
+customerRouter.post(
+  '/change-name/:id',
+  expressAsyncHandler(async (req, res) => {
+    //Before starting: get user by ID
+    const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
+
+    //First, extract the new name
+    const newName = req.body.newName;
+
+    //No need to check if new name is taken: duplicates allowed
+    //Update the database
+    await Customer.updateOne(
+      { _id: customer._id },
+      { $set: { name: newName } }
+    );
+
+    res.send('New name is: ' + newName);
+  })
+);
+
+//post request to change password
+customerRouter.post(
+  '/change-password/:id',
+  expressAsyncHandler(async (req, res) => {
+    //Testing: Password: 123Jackie! $2a$08$JcYB/nOYpQNQgSt7MZolWuiqxMAvi451Jgyr5ENQoR8sUUDNoApZC
+    //Before starting: get user by ID
+    const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
+
+    //First, extract the new password1 and password2
+    const newPassword1 = req.body.newPassword1;
+    const newPassword2 = req.body.newPassword2;
+
+    //Check if both passwords match
+    if (newPassword1 === newPassword2) {
+      //validate if new password is legal
+      var pwRegExp = new RegExp(
+        /(?=[A-Za-z0-9@#$%^&+!=]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+!=])(?=.{8,}).*$/
+      );
+      var isPwLegal = pwRegExp.test(newPassword1);
+
+      if (isPwLegal) {
+        //if new password is legal
+        await Customer.updateOne(
+          { _id: customer._id },
+          { $set: { password: bcrypt.hashSync(newPassword1, 8) } }
+        );
+        return res.send('Password updated');
+      } else {
+        return res.status(401).send({
+          message: 'Invalid password!',
+        });
+      }
+    } else {
+      res.send('Passwords do not match');
+    }
+  })
+);
+
 export default customerRouter;
