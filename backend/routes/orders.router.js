@@ -13,12 +13,34 @@ ordersRouter.post(
     var cartCust = customer.cart;
     var pastOrdersCust = customer.pastOrders;
     const product = await Inventory.findOne({ name: req.body.name }); //finds product with given name
+    var loyaltyPointsPaymentAmount = req.body.loyaltyPoints;
+    var finalCartPrice = 0;
 
-    var cartPrice = await customer.getCartPrice(customer);
+    var fullCartPrice = await customer.getCartPrice(customer);
+
+    var currLoyaltyPoints = customer.loyaltyPoints;
+
+    // check if the customer has enough loyalty points for their request
+    if (currLoyaltyPoints < loyaltyPointsPaymentAmount)
+    {
+      res.status(403).send({ message: "You don't have enough loyalty points for this request!"});
+      return;
+    }
+    else
+    {
+      finalCartPrice = fullCartPrice - (loyaltyPointsPaymentAmount / 10);
+      if (finalCartPrice < 0)
+      {
+        finalCartPrice = 0;
+      }
+    }
+
+    var discount = fullCartPrice - finalCartPrice;
+    var updatedLoyaltyPoints = currLoyaltyPoints + (fullCartPrice) - loyaltyPointsPaymentAmount;
 
     const order = new Order({
       orderItems: cartCust,
-      totalPrice: cartPrice,
+      totalPrice: finalCartPrice,
       customer: customer,
     });
 
@@ -29,7 +51,7 @@ ordersRouter.post(
 
     await Customer.updateOne(
       { _id: customer._id },
-      { $set: { pastOrders: pastOrdersCust } }
+      { $set: { pastOrders: pastOrdersCust, loyaltyPoints: updatedLoyaltyPoints } }
     );
 
     //after the order is sent, clear the customers cart
@@ -39,7 +61,13 @@ ordersRouter.post(
       { $set: { cart: customer.cart } }
     );
 
-    res.send('Your Order has been processed');
+    res.send({ 
+      message: 'Your Order has been processed',
+      fullPrice: fullCartPrice,
+      finalPrice: finalCartPrice,
+      discount: discount,
+      loyaltyPointsUsed: loyaltyPointsPaymentAmount,
+    });
   })
 );
 

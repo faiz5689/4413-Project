@@ -42,7 +42,7 @@ customerSchema.methods.getCartPrice = async (cust) => {
 };
 
 customerSchema.methods.getCartPriceInLoyaltyPoints = async (cust) => {
-  console.log('We are here');
+  // console.log('We are here');
   let cost = cust.getCartPrice(cust);
   return cost * 10;
 };
