@@ -5,6 +5,7 @@ import Customer from '../models/customers.model.js';
 import { isAdmin, isAuth } from '../utils/tokenCheck.js';
 import { tokenGenAndSign } from '../utils/jwtAuth.js';
 import Inventory from '../models/inventory.model.js';
+import Session from '../models/sessions.model.js';
 
 const customerRouter = express.Router();
 
@@ -26,7 +27,17 @@ customerRouter.post(
           secure: true,
         };
         // Maybe also add redirect to home here??
-        res.cookie('token', newToken, cookieOptions);
+        const cook = res.cookie('token', newToken, cookieOptions);
+
+        const session = new Session({
+          customer: customer,
+          login: new Date(),
+          //Do not add logout because user has not logged out yet
+        });
+
+        //save user's session
+        await session.save().then();
+
         res.send({
           _id: customer._id,
           username: customer.username,
@@ -85,6 +96,13 @@ customerRouter.post(
 customerRouter.get(
   '/logout',
   expressAsyncHandler(async (req, res) => {
+    const customer = await Customer.findOne({ username: req.body.username }); //finds customer with given id param
+    const session = await Session.findOne({ customer: customer }); //finds session of given customer
+    session.logout = new Date();
+
+    // //save user's session
+    await session.save().then();
+
     // Redirect here, just like login
     res.clearCookie('token');
     res.status(200).json({

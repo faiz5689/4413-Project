@@ -3,6 +3,7 @@ import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orders.model.js';
 import Customer from '../models/customers.model.js';
 import Inventory from '../models/inventory.model.js';
+import Session from '../models/sessions.model.js';
 
 const adminRouter = express.Router();
 
@@ -136,6 +137,84 @@ adminRouter.get(
     } else {
       res.send('You have to be an admin to run a report on sales');
     }
+  })
+);
+
+//Returns a specific sales report grouped by individual sunglasses, the quantity sold and the revenue each generated
+adminRouter.post(
+  '/run-app-report/:id',
+  expressAsyncHandler(async (req, res) => {
+    const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
+    const activeUsers = await Session.count({
+      logout: { $exists: false },
+    });
+
+    const aggResult = await Session.aggregate([
+      {
+        $match: {
+          logout: { $exists: true },
+        },
+      },
+      {
+        $project: {
+          customer: 1,
+          activeTime: {
+            $divide: [{ $subtract: ['$logout', '$login'] }, 60000],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: '$customer',
+          totalActiveTime: { $sum: '$activeTime' },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: customer._id,
+          avgTime: { $avg: '$totalActiveTime' },
+        },
+      },
+      {
+        $addFields: {
+          activeUsers: activeUsers,
+        },
+      },
+    ]);
+
+    const activeUsersVar = await Session.count({ logout: { $exists: false } });
+    res.send(aggResult);
+
+    // const aggResult = await Session.aggregate([
+    //   {
+    //     $match: {
+    //       logout: { $ne: null },
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: '$user',
+    //       totalActiveTime: { $sum: { $subtract: ['$logout', '$login'] } },
+    //       count: { $sum: 1 },
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: null,
+    //       avgTime: { $avg: '$totalActiveTime' },
+    //       totalActiveUsers: { $sum: 1 },
+    //     },
+    //   },
+    //   {
+    //     $project: {
+    //       _id: 0,
+    //       avgTime: { $divide: ['$avgTime', 1000 * 60] },
+    //       totalActiveUsers: 1,
+    //     },
+    //   },
+    // ]);
+    // res.send(aggResult);
   })
 );
 
