@@ -41,6 +41,9 @@ function ContactForm({
 }) {
   return (
     <Box sx={{ flexGrow: 1, p: 2 }}>
+      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <MailOutlinedIcon />
+      </Avatar>
       <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
         Contact Us
       </Typography>
@@ -131,7 +134,7 @@ export default function ContactPage(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Send the contact form data to your backend API or email service here
+    // handling of the form is not done and just an alert is sent.
     dispatch({
       type: 'CONTACT_FORM_SUBMITTED',
       payload: { name, email, message },
