@@ -2,17 +2,6 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const reviewSchema = new Schema(
-  {
-    name: { type: String, required: true },
-    comment: { type: String, required: true },
-    rating: { type: Number, required: true },
-  },
-  {
-    timestamps: true,
-  }
-);
-
 const inventorySchema = new Schema(
     {
         name: { type: String, required: true, unique: true },
@@ -26,7 +15,12 @@ const inventorySchema = new Schema(
         loyaltyValue: {type: Number, required: true},
         rating: { type: Number, required: true },
         reviewNumber: { type: Number, required: true },
-        reviews: [reviewSchema]
+        reviews: [{ 
+          name: { type: String, required: true },
+          username: { type: String, required: true },
+          comment: { type: String, required: true },
+          rating: { type: Number, required: true },
+        }],
       },
       {
         timestamps: true,

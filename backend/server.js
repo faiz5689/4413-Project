@@ -5,6 +5,7 @@ import customerRouter from './routes/customer.router.js';
 import inventoryRouter from './routes/inventory.router.js';
 import ordersRouter from './routes/orders.router.js';
 import adminRouter from './routes/admin.router.js';
+import reviewRouter from './routes/review.router.js';
 import cors from 'cors';
 dotenv.config();
 
@@ -44,6 +45,7 @@ server.use('/api/users', customerRouter);
 server.use('/api/inventory', inventoryRouter);
 server.use('/api/orders', ordersRouter);
 server.use('/api/admin', adminRouter);
+server.use('/api/review', reviewRouter);
 
 server.get('/', (req, res) => {
   res.send('Server is ready');
