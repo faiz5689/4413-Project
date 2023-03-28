@@ -4,8 +4,6 @@ import Inventory from '../models/inventory.model.js';
 
 const inventoryRouter = express.Router();
 
-// TODO: We need to make sure that the frontend passes the appropriate filtering query to the backend (category + color or color + brand etc.)
-// the router below will get all products and display them (filtered if specified, all if filter not specified from the frontend)
 inventoryRouter.get(
   '/products',
   expressAsyncHandler(async (req, res, next) => {
@@ -66,8 +64,27 @@ inventoryRouter.get(
     const recommendedItems = await Inventory.find({})
       .sort({ rating: -1 })
       .limit(5);
-    res.send(recommendedItems);
+    res.status(201).json({
+       products: recommendedItems,
+    })
   })
 );
+
+inventoryRouter.get(
+    '/products/:id',
+    expressAsyncHandler(async (req, res, next) => {
+      try {
+        var returnProducts;
+  
+        returnProducts = await Inventory.findOne({_id: req.params.id });
+        res.status(201).json({
+          product: returnProducts,
+        });
+      } catch (error) {
+        console.log(error);
+        next(error);
+      }
+    })
+  );
 
 export default inventoryRouter;

@@ -9,6 +9,7 @@ import Header from './Component/navbar/Header';
 import Products from './pages/products';
 import ContactPage from './pages/contact';
 import Cart from './pages/cart';
+import ProductScreen from './pages/productDetails';
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/cart" element={<Cart/>}/>
+          <Route path="/products/:id" element={<ProductScreen />} exact
+            ></Route>
         </Routes>
       </BrowserRouter>
 

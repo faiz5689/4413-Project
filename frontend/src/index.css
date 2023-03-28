@@ -17,11 +17,20 @@ header a {
   text-decoration: none;
 }
 
+.recommended {
+  background: linear-gradient(#a367df, #ffffff) ;
+}
 .card {
   border: 0.1rem #c0c0c0 solid;
   background-color: #f8f8f8;
   border-radius: 0.5rem;
   margin: 1rem;
+  width: 29rem;
+  height: 25rem;
+}
+.card:hover {
+  background-color: rgb(199, 239, 234);
+  transition: 0.25s;
 }
 .card-body {
   padding: 1rem;
@@ -31,6 +40,7 @@ header a {
 }
 .price {
   font-size: 2rem;
+  margin-bottom: 0.1rem;
 }
 
 .row {
@@ -52,14 +62,114 @@ header a {
 img {
   border-radius: 0.5rem;
 }
-img.small {
-  max-width: 5rem;
-  width: 100%;
-}
 img.medium {
   max-width: 29rem;
-  width: 100%;
+  max-height: 13rem;
+  width: auto;
+  height: 13rem;
 }
 img.large {
-  width: 100%;
+  max-width: rem;
+  max-height: 13rem;
+  width: auto;
+  height: 13rem;
+}
+
+h1 {
+  font-size: 1.8rem;
+  padding: 1rem 0;
+}
+h2 {
+  font-size: 1.6rem;
+  padding: 1rem 0;
+}
+.headline {
+  font-size: 2rem;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px;
+  display: flex;
+}
+
+.left-side {
+  width: 65%;
+  position: relative;
+}
+ 
+.right-side {
+  width: 35%;
+  margin-top: 60px;
+}
+
+.left-side img {
+  width: 30rem;
+  position: absolute;
+  padding-top: 10rem;
+  padding-left: 8rem;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.product-description {
+  border-bottom: 1px solid #E1E8EE;
+  margin-bottom: 20px;
+}
+.product-description span {
+  font-size: 12px;
+  color: #358ED7;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.product-description h1 {
+  font-weight: 300;
+  font-size: 52px;
+  color: #43484D;
+  letter-spacing: -2px;
+}
+.product-description p {
+  font-size: 16px;
+  font-weight: 300;
+  color: #86939E;
+  line-height: 24px;
+}
+
+.product-price {
+  display: flex;
+  align-items: center;
+}
+ 
+.product-price span {
+  font-size: 26px;
+  font-weight: 300;
+  color: #43474D;
+  margin-right: 20px;
+}
+
+span {
+  font-size: 16px;
+  font-weight: 300;
+  color: #86939E;
+  line-height: 24px;
+}
+
+
+ 
+.cart-btn {
+  display: inline-block;
+  background-color: #7DC855;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 12px 30px;
+  transition: all .5s;
+}
+.cart-btn:hover {
+  background-color: #64af3d;
 }

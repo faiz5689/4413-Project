@@ -10,6 +10,7 @@ import {
 import {
     productListReducer,
     productDetailsReducer,
+    recommendedListReducer,
 } from './reducers/products.reducer.js'
 
 const initialState = {
@@ -24,6 +25,7 @@ const initialState = {
 const reducers = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  recommendedList: recommendedListReducer,
   userSignin: userSigninReducer,
   userRegister: userRegisterReducer,
 });

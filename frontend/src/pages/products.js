@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { listProducts } from '../actions/product.actions.js';
+import { listProducts, listRecommended } from '../actions/product.actions.js';
 import Product from '../Component/Product';
 
 export default function Products (){
@@ -9,13 +9,33 @@ export default function Products (){
     const dispatch = useDispatch();
     const productList = useSelector((state) => state.productList);
     const { error, products } = productList;
-    localStorage.setItem('prodList', JSON.stringify(productList));
+    const recommendedList = useSelector((state) => state.recommendedList);
+    const { recomErr, recommended } = recommendedList;
+
     useEffect(() => {
       dispatch(listProducts({}));
+      dispatch(listRecommended());
     }, [dispatch]);
     return (
    <div>
-      <h2>All Products</h2>
+    <div className='recommended'>
+        <h2 className='headline'>Recommended for you!</h2>
+        {recomErr ? 
+        (<h3>{recomErr}</h3>) :
+        (<>
+            {recommended.length === 0 && <h3>No Recommended Product Found</h3>}
+            <div className="row center">
+              {recommended.map((recom) => (
+                <Product key={recom._id} product={recom}></Product>
+              ))}
+            </div>
+        </>
+        )}
+    </div>
+    <div>
+        
+    </div>
+      <h2 className='headline'>All Products</h2>
       {error ? (
         <h3>{error}</h3>
       ) : (

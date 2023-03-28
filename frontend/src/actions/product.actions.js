@@ -35,3 +35,18 @@ export const detailsProduct = (productId) => async (dispatch) => {
     });
   }
 };
+
+export const listRecommended = () => async (dispatch) => {
+    dispatch({
+      type: 'RECOMMENDED_LIST_REQUEST',
+    });
+    try {
+      const { data } = await Axios.get(
+        API_URL + `/recommended`
+      );
+      dispatch({ type: 'RECOMMENDED_LIST_SUCCESS', payload: data });
+    } catch (recomError) {
+      alert(recomError.data.message);
+      dispatch({ type: 'RECOMMENDED_LIST_FAIL', payload: recomError.message });
+    }
+  };
