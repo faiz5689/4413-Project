@@ -23,17 +23,17 @@ inventoryRouter.get(
 
     let dbQuery = [];
 
-    if (sortingParam === undefined) {
+    if (sortingParam === undefined || sortingParam === '') {
       sortingParam = { $natural: 1 };
     }
 
-    if (filterColour !== undefined) {
+    if (filterColour !== undefined && filterColour !== '') {
       dbQuery.push({ colour: { $eq: filterColour } });
     }
-    if (filterBrand !== undefined) {
+    if (filterBrand !== undefined && filterBrand !== '') {
       dbQuery.push({ brand: { $eq: filterBrand } });
     }
-    if (filterCategory !== undefined) {
+    if (filterCategory !== undefined && filterCategory !== '') {
       dbQuery.push({ category: { $eq: filterCategory } });
     }
 
@@ -49,8 +49,7 @@ inventoryRouter.get(
       }
 
       res.status(201).json({
-        success: true,
-        returnProducts,
+        products: returnProducts,
       });
     } catch (error) {
       console.log(error);

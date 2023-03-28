@@ -7,6 +7,11 @@ import {
   userSigninReducer,
 } from './reducers/user.reducer.js';
 
+import {
+    productListReducer,
+    productDetailsReducer,
+} from './reducers/products.reducer.js'
+
 const initialState = {
   userSignin: {
     userInfo: localStorage.getItem('userInfo')
@@ -17,6 +22,8 @@ const initialState = {
 };
 
 const reducers = combineReducers({
+  productList: productListReducer,
+  productDetails: productDetailsReducer,
   userSignin: userSigninReducer,
   userRegister: userRegisterReducer,
 });
