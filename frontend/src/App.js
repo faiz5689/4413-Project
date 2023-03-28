@@ -8,26 +8,11 @@ import Home from './pages/home';
 import Header from './Component/navbar/Header';
 import Products from './pages/products';
 import ContactPage from './pages/contact';
+import Cart from './pages/cart';
 
 function App() {
   return (
     <div className="App">
-      {/* <header className="App-header">
-        <a href="/">Home</a>
-        <hr/>
-        <a href="/checkout">Checkout</a>
-        <hr/>
-        <a href="/login">Login</a>
-      </header> */}
-
-      {/* <BrowserRouter>
-        <Routes>
-          <Route path='/' exact component={Home}/>
-          <Route path='/login' component={Login}/>
-          <Route path='/register' component={Register}/>
-          <Route path='/checkout' component={Checkout}/>
-        </Routes>
-      </BrowserRouter> */}
       <BrowserRouter>
         <Header />
         <Routes>
@@ -37,6 +22,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/products" element={<Products />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/cart" element={<Cart/>}/>
         </Routes>
       </BrowserRouter>
 

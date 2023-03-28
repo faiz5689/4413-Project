@@ -170,4 +170,5 @@ export default class Checkout extends React.Component {
   }
 }
 
-render(<Checkout />, document.getElementById('root'))
+// render(<Checkout />, document.getElementById('root'))
+// export default Checkout;

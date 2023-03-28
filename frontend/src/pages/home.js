@@ -1,20 +1,11 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { signin } from '../actions/user.actions.js';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { makeStyles } from '@mui/styles';
+import Image from '../Component/assets/background4.jpg';
+import LandingContent from '../Component/landing/landingContent.js';
+import LandingHeader from '../Component/landing/landingHeader.js';
 
 function Copyright(props) {
   return (
@@ -26,15 +17,45 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
+// const theme = createTheme();
+const useStyles = makeStyles((theme) => ({
+  root: {
+    minHeight: '100vh',
+    backgroundImage: `url(${Image})`,
+    backgroundRepeat:"no-repeat",
+    backgroundSize:'cover',
+  },
+  colorText:{
+    color: '#5Aff3D',
+  },
+  container: {
+    textAlign: 'center',
+  },
+  title: {
+    color: '#fff',
+    fontSize: '4.5rem',
+  },
+  goDown: {
+    color: '#5AFF3D',
+  },
+}));
 
 export default function Home(props) {
-
+  const classes = useStyles();
+  const [checked, setChecked] = useState(false);
+  useEffect(() => {
+    setChecked(true);
+  }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-        <div>Home</div>
-    </ThemeProvider>
+   
+    <div className={classes.root}>
+      <CssBaseline/>
+      <LandingHeader/>
+      <LandingContent/>
+    </div>
+    
+    
   );
 
 }
