@@ -46,9 +46,17 @@ inventoryRouter.get(
         );
       }
 
-      res.status(201).json({
-        products: returnProducts,
-      });
+      if (returnProducts)
+      {
+        res.status(201).json({
+            products: returnProducts,
+          });
+      }
+      else 
+      {
+        res.status(404).send({ message: 'Products Not Found' });
+      }
+
     } catch (error) {
       console.log(error);
       console.log(dbQuery);
@@ -64,9 +72,16 @@ inventoryRouter.get(
     const recommendedItems = await Inventory.find({})
       .sort({ rating: -1 })
       .limit(5);
-    res.status(201).json({
-       products: recommendedItems,
-    })
+    if (recommendedItems)
+    {
+        res.status(201).json({
+            products: recommendedItems,
+         })
+    }
+    else 
+    {
+      res.status(404).send({ message: 'Products Not Found' });
+    }
   })
 );
 
@@ -77,9 +92,16 @@ inventoryRouter.get(
         var returnProducts;
   
         returnProducts = await Inventory.findOne({_id: req.params.id });
-        res.status(201).json({
-          product: returnProducts,
-        });
+        if (returnProducts)
+        {
+          res.status(201).json({
+              product: returnProducts,
+            });
+        }
+        else 
+        {
+          res.status(404).send({ message: 'Products Not Found' });
+        }
       } catch (error) {
         console.log(error);
         next(error);

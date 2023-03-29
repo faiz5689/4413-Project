@@ -15,7 +15,6 @@ export const listProducts =
       );
       dispatch({ type: 'PRODUCT_LIST_SUCCESS', payload: data });
     } catch (error) {
-      alert(error.data.message);
       dispatch({ type: 'PRODUCT_LIST_FAIL', payload: error.message });
     }
   };
