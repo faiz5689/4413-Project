@@ -25,8 +25,8 @@ header a {
   background-color: #f8f8f8;
   border-radius: 0.5rem;
   margin: 1rem;
-  width: 29rem;
-  height: 25rem;
+  width: 25rem;
+  height: 21rem;
 }
 .card:hover {
   background-color: rgb(199, 239, 234);
@@ -63,8 +63,8 @@ img {
   border-radius: 0.5rem;
 }
 img.medium {
-  max-width: 29rem;
-  max-height: 13rem;
+  max-width: 25rem;
+  max-height: 9rem;
   width: auto;
   height: 13rem;
 }
@@ -158,8 +158,6 @@ span {
   line-height: 24px;
 }
 
-
- 
 .cart-btn {
   display: inline-block;
   background-color: #7DC855;
@@ -172,4 +170,30 @@ span {
 }
 .cart-btn:hover {
   background-color: #64af3d;
+}
+
+.filtering-div {
+  padding-bottom: 1rem;    
+  width: 100%;
+}
+
+.filter-label{
+  float: left;
+  margin: 1rem;
+}
+.sort {
+  float: left;
+  margin: 1rem; 
+}
+.colour{
+  float: left;
+  margin: 1rem;
+}
+.brand-filter{
+  float: left;
+  margin: 1rem;
+}
+.category-filter{
+  float: left;
+  margin: 1rem;
 }

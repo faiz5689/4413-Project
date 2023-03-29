@@ -21,7 +21,7 @@ inventoryRouter.get(
 
     let dbQuery = [];
 
-    if (sortingParam === undefined || sortingParam === '') {
+    if (!sortingParam|| sortingParam === '') {
       sortingParam = { $natural: 1 };
     }
 

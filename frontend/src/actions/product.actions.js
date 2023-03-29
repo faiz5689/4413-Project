@@ -2,9 +2,7 @@ import Axios from 'axios';
 
 const API_URL = "http://localhost:4000/api/inventory";
 
-export const listProducts =
-  ({colour = '', brand = '', cat = '', sort = '',
-  }) =>
+export const listProducts = ({colour: colour, brand: brand, cat: cat, sort: sort}) =>
   async (dispatch) => {
     dispatch({
       type: 'PRODUCT_LIST_REQUEST',

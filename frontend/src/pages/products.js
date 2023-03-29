@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { listProducts, listRecommended } from '../actions/product.actions.js';
 import Product from '../Component/Product';
@@ -11,18 +11,94 @@ export default function Products (){
     const recommendedList = useSelector((state) => state.recommendedList);
     const { recomErr, recommended } = recommendedList;
 
+    const [sortFilter, setSortFilter] = useState('');
+    const [brandFilter, setBrandFilter] = useState('');
+    const [categoryFilter, setCategoryFilter] = useState('');
+    const [colourFilter, setColourFilter] = useState('');
+
     useEffect(() => {
-      dispatch(listProducts({}));
-      dispatch(listRecommended());
-    }, [dispatch]);
+      dispatch(listProducts({colour: colourFilter, brand: brandFilter, cat: categoryFilter, sort: sortFilter}));
+      dispatch(listRecommended());  
+    }, [dispatch, colourFilter, brandFilter, categoryFilter, sortFilter]);
     return (
    <div>
-    <div className='recommended'>
+        <div className='filtering-div'>
+             <div className='sort'>
+               <label>Sort by:  </label>  
+            <select
+                value={sortFilter}
+                onChange={(e) => setSortFilter(e.target.value)}
+             >
+                <option value='' selected>None</option>
+                <option value="price">Price: Low to High</option>
+                <option value="-price">Price: High to Low</option>
+                <option value="name">Name: A to Z</option>
+                <option value="-name">Name: Z to A</option>
+             </select>
+            </div>
+
+            
+            <label className='filter-label'>Filter By:</label>
+            <div className='colour'>
+           
+            <select
+                value={colourFilter}
+                onChange={(e) => setColourFilter(e.target.value)}
+             >
+                <option value='' selected>Colour</option>
+                <option value="Black">Black</option>
+                <option value="Blue">Blue</option>
+                <option value="Brown">Brown</option>
+                <option value="Gold">Gold</option>
+                <option value="Green">Green</option>
+                <option value="Grey">Grey</option>
+                <option value="Pink">Pink</option>
+                <option value="Purple">Purple</option>
+                <option value="Silver">Silver</option>
+                
+             </select>
+            </div>
+
+            <div className='category-filter'>
+            <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+             >
+                <option value='' selected>Category</option>
+                <option value="Aviators">Aviator</option>
+                <option value="Squared">Squared</option>
+                <option value="Classics">Classics</option>
+                <option value="Round">Round</option>
+             </select>
+            </div>
+
+            <div className='brand-filter'>
+            <select
+                value={brandFilter}
+                onChange={(e) => setBrandFilter(e.target.value)}
+             >
+                <option value='' selected>Brand</option>
+                <option value="Gucci">Gucci</option>
+                <option value="Dior">Dior</option>
+                <option value="Nike">Nike</option>
+                <option value="Oakley">Oakley</option>
+                <option value="Persol">Persol</option>
+                <option value="Prada">Prada</option>
+                <option value="Ray-Ban">Ray-Ban</option>
+                <option value="Quay">Quay</option>
+                <option value="Tom Ford">Tom Ford</option>
+                <option value="Warby Parker">Warby Parker</option>
+             </select>
+            </div>
+
+        </div>
+        <div className='content-div'>
+        <div className='recommended'>
         <h2 className='headline'>Recommended for you!</h2>
         {recomErr ? 
         (<h3>{recomErr}</h3>) :
         (<>
-            {recommended.length === 0 && <h3>No Recommended Product Found</h3>}
+            {recommended.length === 0}
             <div className="row center">
               {recommended.map((recom) => (
                 <Product key={recom._id} product={recom}></Product>
@@ -47,6 +123,8 @@ export default function Products (){
           </div>
         </>
       )}
+        </div>
+
     </div>
     );
 }
