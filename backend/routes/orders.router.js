@@ -3,11 +3,13 @@ import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orders.model.js';
 import Customer from '../models/customers.model.js';
 import Inventory from '../models/inventory.model.js';
+import { isAuth } from '../utils/tokenCheck.js';
 
 const ordersRouter = express.Router();
 
 ordersRouter.post(
   '/checkout/:id',
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;

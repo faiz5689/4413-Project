@@ -4,12 +4,15 @@ import Order from '../models/orders.model.js';
 import Customer from '../models/customers.model.js';
 import Inventory from '../models/inventory.model.js';
 import Session from '../models/sessions.model.js';
+import { isAuth, isAdmin } from '../utils/tokenCheck.js';
 
 const adminRouter = express.Router();
 
 //Returns a general sales report displaying the revenue in the past month
 adminRouter.get(
   '/run-general-sales-report/:id',
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const user = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
 
@@ -52,6 +55,8 @@ adminRouter.get(
 //Returns a specific sales report grouped by individual sunglasses, the quantity sold and the revenue each generated
 adminRouter.get(
   '/run-sales-report-specific/:id',
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const user = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     const month = parseInt(req.body.month);
@@ -143,6 +148,8 @@ adminRouter.get(
 //Returns a specific sales report grouped by individual sunglasses, the quantity sold and the revenue each generated
 adminRouter.post(
   '/run-app-report/:id',
+  isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     const activeUsers = await Session.count({

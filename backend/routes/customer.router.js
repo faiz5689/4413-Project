@@ -2,7 +2,7 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
 import Customer from '../models/customers.model.js';
-import { isAdmin, isAuth } from '../utils/tokenCheck.js';
+import { isAuth, isAdmin } from '../utils/tokenCheck.js';
 import { tokenGenAndSign } from '../utils/jwtAuth.js';
 import Inventory from '../models/inventory.model.js';
 import Session from '../models/sessions.model.js';
@@ -93,8 +93,9 @@ customerRouter.post(
   })
 );
 
-customerRouter.get(
+customerRouter.post(
   '/logout',
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ username: req.body.username }); //finds customer with given id param
     const session = await Session.findOne({ customer: customer }); //finds session of given customer
@@ -115,6 +116,7 @@ customerRouter.get(
 //post request to add item to cart
 customerRouter.post(
   '/add-to-cart/:id',
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;
@@ -141,6 +143,7 @@ customerRouter.post(
 //post request to add item to cart
 customerRouter.post(
   '/remove-from-cart/:id',
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;
@@ -168,6 +171,7 @@ customerRouter.post(
 //post request to change username
 customerRouter.post(
   '/change-username/:id',
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     //Before starting: get user by ID
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
@@ -194,6 +198,7 @@ customerRouter.post(
 //post request to change Name
 customerRouter.post(
   '/change-name/:id',
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     //Before starting: get user by ID
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
@@ -215,6 +220,7 @@ customerRouter.post(
 //post request to change password
 customerRouter.post(
   '/change-password/:id',
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     //Testing: Password: 123Jackie! $2a$08$JcYB/nOYpQNQgSt7MZolWuiqxMAvi451Jgyr5ENQoR8sUUDNoApZC
     //Before starting: get user by ID

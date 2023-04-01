@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signout } from '../../actions/user.actions.js';
 import AppBar from '@mui/material/AppBar';
 import { IconButton, Toolbar, Typography } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -11,7 +13,25 @@ import { useLocation } from 'react-router-dom';
 
 const Header = () => {
   const [value, setValue] = useState();
+  const navigate = useNavigate();
   const pathName  = useLocation();
+  const dispatch = useDispatch();
+  var user = localStorage.getItem("username");
+
+  const handleLogout = (e) => {
+    if (user)
+    {
+      e.preventDefault();
+      dispatch(signout(user));
+      localStorage.removeItem("username");
+      navigate('/');
+    }
+    else
+    {
+      alert ("Something went wrong.");
+    }
+
+  };
 
   return (
     <React.Fragment>
@@ -33,35 +53,56 @@ const Header = () => {
             TabIndicatorProps={{ style: { background: '#FADA5E' } }}
           >
             <Tab component={Link} to="/products" label="Products"></Tab>
-            <Tab component={Link} to="/contact" label="Contact"></Tab>
-            <Tab component={Link} to="/checkout" label="Checkout"></Tab>
+            {user ?
+            (<><Tab component={Link} to="/contact" label="Contact"></Tab>
+             <Tab component={Link} to="/checkout" label="Checkout"></Tab></>) :
+            (<><Tab component={Link} to="/contact" label="Contact"></Tab></>)
+            }
+            
           </Tabs>
-          <IconButton 
-            onClick={() => setValue(false)} 
-            component={Link} to="/cart" 
-            sx={{color:"white", marginLeft:'20%' }}>
-            <ShoppingCartIcon/>
-          </IconButton>
-          <Button
-            onClick={() => setValue(false)}
-            component={Link}
-            to="/login"
-            variant="contained"
-            color="primary"
-            sx={{ marginLeft: 'auto' }}
-          >
-            LOGIN
-          </Button>
-          <Button
-            onClick={() => setValue(false)}
-            component={Link}
-            to="/register"
-            variant="contained"
-            color="primary"
-            sx={{ marginLeft: '10px' }}
-          >
-            SIGN UP
-          </Button>
+          {user ?
+            ( <IconButton 
+              onClick={() => setValue(false)} 
+              component={Link} to="/cart" 
+              sx={{color:"white", marginLeft:'20%' }}>
+              <ShoppingCartIcon/>
+            </IconButton>) :
+            (<></>)
+          }
+
+          {user ?
+            (<>
+            Welcome, {user}
+            <Button
+              onClick={handleLogout}
+              component={Link}
+              variant="contained"
+              color="primary"
+              sx={{ marginLeft: '5%' }}
+            >
+              LOGOUT
+            </Button></>) :
+            (<><Button
+              onClick={() => setValue(false)}
+              component={Link}
+              to="/login"
+              variant="contained"
+              color="primary"
+              sx={{ marginLeft: '30%' }}
+            >
+              LOGIN
+            </Button>
+            <Button
+              onClick={() => setValue(false)}
+              component={Link}
+              to="/register"
+              variant="contained"
+              color="primary"
+              sx={{ marginLeft: '10px' }}
+            >
+              SIGN UP
+            </Button></>)
+          }
         </Toolbar>
       </AppBar>
     </React.Fragment>

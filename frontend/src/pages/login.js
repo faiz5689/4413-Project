@@ -57,6 +57,7 @@ export default function Login(props) {
     useEffect(() => {
         if (userInfo) {
           navigate('/');
+          localStorage.setItem("username", userInfo.username);
         }
       }, [navigate, userInfo]);
 

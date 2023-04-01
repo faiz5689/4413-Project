@@ -2,29 +2,27 @@ import jwt from 'jsonwebtoken';
 
 //authenticates user
 export const isAuth = (req, res, next) => {
-  const auth = req.headers.auth;
-  if (auth) {
-    const token = auth.slice(7, auth.length);
+  const token = req.cookies.token;
+  if (token) {
     jwt.verify(
       token,
       process.env.JWT_SECRET || 'somethingsecret',
       (err, decode) => {
         if (err) {
-          res.status(401).send({ message: 'Invalid Token. Please Try Again!' });
+          res.status(401).send({ message: 'Invalid Token. Please Log in Again!' });
         } else {
-          req.customer = decode;
           next();
         }
       }
     );
   } else {
-    res.status(401).send({ message: 'No Token. Please Try Again!' });
+    res.status(401).send({ message: 'No Token. Please Log In again!' });
   }
 };
 
 //authenticates admin
 export const isAdmin = (req, res, next) => {
-  if (req.customer && req.customer.isAdmin) {
+  if (req.username && req.username.isAdmin) {
     next();
   } else {
     res.status(401).send({ message: 'Invalid Admin Token' });

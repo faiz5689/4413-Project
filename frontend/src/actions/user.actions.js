@@ -49,8 +49,14 @@ export const signin = (username, password) => async (dispatch) => {
   }
 };
 
-export const signout = () => (dispatch) => {
-  localStorage.removeItem('userInfo');
-  dispatch({ type: 'USER_SIGNOUT' });
-  document.location.href = '/signin';
+export const signout = (username) => async (dispatch) => {
+  try {
+    dispatch({ type: 'USER_SIGNOUT', payload: {username} });
+    const {data} = await Axios.post(API_URL + '/logout', {username}, { withCredentials: true });
+    document.location.href = '/';
+    localStorage.removeItem('userInfo');
+  } catch (err) {
+
+  }
+  
 };

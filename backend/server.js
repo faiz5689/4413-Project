@@ -7,6 +7,7 @@ import ordersRouter from './routes/orders.router.js';
 import adminRouter from './routes/admin.router.js';
 import reviewRouter from './routes/review.router.js';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 
 const url = process.env.ATLAS_URI;
@@ -38,6 +39,7 @@ const corsOptions = {
 };
 
 server.use(cors(corsOptions));
+server.use(cookieParser())
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
