@@ -50,14 +50,11 @@ export default function Home(props) {
     
 
   return (
-   
     <div className={classes.root}>
       <CssBaseline/>
       <LandingHeader/>
       <LandingContent/>
     </div>
-    
-    
   );
 
 }

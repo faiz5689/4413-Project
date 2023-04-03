@@ -33,6 +33,16 @@ const Header = () => {
 
   };
 
+  const tabs = [
+    <Tab key="products" component={Link} to="/products" label="Products" />,
+    user && (
+      <>
+        <Tab key="contact" component={Link} to="/contact" label="Contact" />
+        <Tab key="checkout" component={Link} to="/checkout" label="Checkout" />
+      </>
+    ),
+  ].filter(Boolean);
+
   return (
     <React.Fragment>
       <AppBar elevation={pathName.pathname === '/' ? 0 : 3}
@@ -52,12 +62,7 @@ const Header = () => {
             onChange={(e, value) => setValue(value)}
             TabIndicatorProps={{ style: { background: '#FADA5E' } }}
           >
-            <Tab component={Link} to="/products" label="Products"></Tab>
-            {user ?
-            (<><Tab component={Link} to="/contact" label="Contact"></Tab>
-             <Tab component={Link} to="/checkout" label="Checkout"></Tab></>) :
-            (<><Tab component={Link} to="/contact" label="Contact"></Tab></>)
-            }
+            {tabs}
             
           </Tabs>
           {user ?
