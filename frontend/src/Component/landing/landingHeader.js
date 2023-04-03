@@ -14,22 +14,38 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Nunito',
   },
   colorText: {
-    color: '#5553b7',
-    fontSize: '2rem',
+    color: '#7865f5',
+    fontSize: '3.5rem', // updated font size
+    fontWeight: 'bold',
+    textShadow: '2px 2px 4px #000',
+  },
+  colorText2: {
+    color: '#7865f5',
+    fontSize: '2.5rem', // updated font size
+    fontWeight: 'bold',
+    textShadow: '2px 2px 4px #000',
   },
   container: {
     textAlign: 'center',
   },
   title: {
-    color: '#fff',
+    color: '#ffffff',
     fontSize: '4.5rem',
+    fontWeight: 'bold',
+    fontFamily: 'Arial',
+    textShadow: '2px 2px 4px #000',
   },
   title2: {
-    color: '#fff',
+    color: '#ffffff',
     fontSize: '2.0rem',
+    fontWeight: 'bold',
+    fontFamily: 'Arial',
+    textShadow: '2px 2px 4px #000',
+    marginTop: '1rem',
   },
   goDown: {
     color: '#5553b7',
+    fontSize: '4rem',
   },
 }));
 
@@ -50,19 +66,16 @@ export default function LandingHeader() {
         <div className={classes.container}>
           <h1 className={classes.title}>
             Welcome to <br />{' '}
-            <span className={classes.colorText}>SunSationalShades.</span>
+            <span className={classes.colorText}>SunSational Shades.</span>
           </h1>
           <h3 className={classes.title2}>
             {' '}
             Begin To See The World{' '}
-            <span className={classes.colorText}>SunSationally.</span>
+            <span className={classes.colorText2}>SunSationally.</span>
           </h3>
           <Scroll to="landing-content" smooth={true}>
             <IconButton>
-              <KeyboardArrowDownIcon
-                className={classes.goDown}
-                sx={{ fontSize: '4rem' }}
-              />
+              <KeyboardArrowDownIcon className={classes.goDown} />
             </IconButton>
           </Scroll>
         </div>
