@@ -115,7 +115,7 @@ function ContactInfo() {
       </Typography>
       <Typography variant="subtitle1">Phone: 1-800-123-4567</Typography>
       <Typography variant="subtitle1">
-        Email: SunsationalShades@ecommerce.com
+        Email: Sunsational@ecommerce.com
       </Typography>
       <Typography variant="subtitle1">Address: Toronto, ON, Canada</Typography>
     </Box>
