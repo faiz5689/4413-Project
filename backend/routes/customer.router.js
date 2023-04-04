@@ -168,6 +168,19 @@ customerRouter.post(
   })
 );
 
+//post request to show entire customer's cart
+customerRouter.post(
+  '/cart/:id',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
+    var cartCust = customer.cart;
+
+    //send entire customer
+    res.send(cartCust);
+  })
+);
+
 //post request to change username
 customerRouter.post(
   '/change-username/:id',
