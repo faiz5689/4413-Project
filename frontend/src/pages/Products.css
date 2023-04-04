@@ -1,20 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 .products-page {
-  background-image: url('../Component/assets/background.jpg');
   background-size: cover;
   background-position: center;
   padding: 20px;
   font-family: 'Roboto', sans-serif;
 }
 
+.background-video {
+  position: fixed;
+  min-width: 100%;
+  min-height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
 .filtering-div {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  margin: 20px auto;
   padding: 15px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 5px;
+  max-width: 45%; /* Set a max-width to prevent the div from stretching too much on larger screens */
 }
 
 .content-div {
@@ -40,9 +52,11 @@
 .headline {
   text-align: center;
   font-weight: 700;
-  font-size: 28px;
+  font-size: 38px;
   color: #333;
   margin-bottom: 30px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add black text shadow */
 }
 
 .row.center {
@@ -67,7 +81,6 @@
 
 .slider-arrow {
   font-size: 24px;
-  background: none;
   border: none;
   cursor: pointer;
   padding: 10px;
@@ -77,6 +90,7 @@
   color: #333;
   font-weight: bold;
   user-select: none;
+  border-radius: 50%;
 }
 
 .left-arrow {
@@ -88,7 +102,6 @@
 }
 
 .content-div {
-  background-color: transparent;
   padding: 20px;
   border-radius: 5px;
   box-shadow: none;

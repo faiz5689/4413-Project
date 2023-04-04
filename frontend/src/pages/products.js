@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { listProducts, listRecommended } from '../actions/product.actions.js';
 import Product from '../Component/Product';
 import './Products.css';
+import backgroundVideo from '../Component/assets/videoeditedfinal.mp4';
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -44,6 +45,13 @@ export default function Products() {
 
   return (
     <div className="products-page">
+      <video
+        className="background-video"
+        src={backgroundVideo}
+        autoPlay
+        muted
+        loop
+      ></video>
       <div className="filtering-div">
         <div className="sort">
           <label>Sort by: </label>
