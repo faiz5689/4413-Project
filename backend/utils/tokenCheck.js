@@ -3,13 +3,16 @@ import jwt from 'jsonwebtoken';
 //authenticates user
 export const isAuth = (req, res, next) => {
   const token = req.cookies.token;
+  console.log(token);
   if (token) {
     jwt.verify(
       token,
       process.env.JWT_SECRET || 'somethingsecret',
       (err, decode) => {
         if (err) {
-          res.status(401).send({ message: 'Invalid Token. Please Log in Again!' });
+          res
+            .status(401)
+            .send({ message: 'Invalid Token. Please Log in Again!' });
         } else {
           next();
         }

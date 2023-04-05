@@ -21,7 +21,7 @@ inventoryRouter.get(
 
     let dbQuery = [];
 
-    if (!sortingParam|| sortingParam === '') {
+    if (!sortingParam || sortingParam === '') {
       sortingParam = { $natural: 1 };
     }
 
@@ -46,17 +46,13 @@ inventoryRouter.get(
         );
       }
 
-      if (returnProducts)
-      {
+      if (returnProducts) {
         res.status(201).json({
-            products: returnProducts,
-          });
-      }
-      else 
-      {
+          products: returnProducts,
+        });
+      } else {
         res.status(404).send({ message: 'Products Not Found' });
       }
-
     } catch (error) {
       console.log(error);
       console.log(dbQuery);
@@ -72,41 +68,44 @@ inventoryRouter.get(
     const recommendedItems = await Inventory.find({})
       .sort({ rating: -1 })
       .limit(5);
-    if (recommendedItems)
-    {
-        res.status(201).json({
-            products: recommendedItems,
-         })
-    }
-    else 
-    {
+    if (recommendedItems) {
+      res.status(201).json({
+        products: recommendedItems,
+      });
+    } else {
       res.status(404).send({ message: 'Products Not Found' });
     }
   })
 );
 
 inventoryRouter.get(
-    '/products/:id',
-    expressAsyncHandler(async (req, res, next) => {
-      try {
-        var returnProducts;
-  
-        returnProducts = await Inventory.findOne({_id: req.params.id });
-        if (returnProducts)
-        {
-          res.status(201).json({
-              product: returnProducts,
-            });
-        }
-        else 
-        {
-          res.status(404).send({ message: 'Products Not Found' });
-        }
-      } catch (error) {
-        console.log(error);
-        next(error);
+  '/products/:id',
+  expressAsyncHandler(async (req, res, next) => {
+    try {
+      var returnProducts;
+
+      returnProducts = await Inventory.findOne({ _id: req.params.id });
+      if (returnProducts) {
+        res.status(201).json({
+          product: returnProducts,
+        });
+      } else {
+        res.status(404).send({ message: 'Products Not Found' });
       }
-    })
-  );
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  })
+);
+
+//Diego added: we might delete
+inventoryRouter.get(
+  '/get-product/:id',
+  expressAsyncHandler(async (req, res) => {
+    const product = await Inventory.findOne({ _id: req.params.id }); //finds product with given id
+    res.send(product);
+  })
+);
 
 export default inventoryRouter;

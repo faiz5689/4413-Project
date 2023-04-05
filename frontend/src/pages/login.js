@@ -15,10 +15,14 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
       {'Copyright © SunSational Shades, '}
       {new Date().getFullYear()}
       {'.'}
@@ -29,37 +33,34 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login(props) {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-    const navigate = useNavigate();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo, error } = userSignin;
 
-    const userSignin = useSelector((state) => state.userSignin);
-    const { userInfo, error } = userSignin;
-  
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        var pwRegExp = new RegExp (/(?=[A-Za-z0-9@#$%^&+!=]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+!=])(?=.{8,}).*$/);
-        var validate = pwRegExp.test(password);
-        if (validate)
-        {
-            dispatch(signin(username, password));
-        }
-        else
-        {
-            alert ("Password needs to have at least 1 Uppercase, 1 Lowercase, 1 number, 1 special character");
-        }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    var pwRegExp = new RegExp(
+      /(?=[A-Za-z0-9@#$%^&+!=]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+!=])(?=.{8,}).*$/
+    );
+    var validate = pwRegExp.test(password);
+    if (validate) {
+      dispatch(signin(username, password));
+    } else {
+      alert('Username or password is invalid');
+    }
+  };
 
-    };
-
-    useEffect(() => {
-        if (userInfo) {
-          navigate('/');
-          localStorage.setItem("username", userInfo.username);
-        }
-      }, [navigate, userInfo]);
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/');
+      localStorage.setItem('username', userInfo.username);
+    }
+  }, [navigate, userInfo]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -123,5 +124,4 @@ export default function Login(props) {
       </Container>
     </ThemeProvider>
   );
-
 }

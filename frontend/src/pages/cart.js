@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import {
   Table,
@@ -13,9 +13,11 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import Axios from 'axios';
+import axios from 'axios';
 
-const API_URL = 'http://localhost:4000/api/customer';
+//Customer URL
+const API_URL = 'http://localhost:4000/api/users';
+const API_URL_INVENTORY = 'http://localhost:4000/api/inventory';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '0.25rem 0.5rem',
   },
   button: {
+    marginLeft: 'auto',
     textTransform: 'none',
     borderRadius: '0.25rem',
     fontSize: '1rem',
@@ -77,15 +80,50 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1.5rem',
   },
 }));
+
 const Cart = () => {
   const classes = useStyles();
-  var user = JSON.parse(localStorage.getItem("userInfo"));
+  var user = JSON.parse(localStorage.getItem('userInfo'));
   const [loyaltyPoints, setLoyaltyPoints] = useState(0);
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: 'Product 1', price: 10.99, quantity: 2 },
-    { id: 2, name: 'Product 2', price: 19.99, quantity: 1 },
-    { id: 3, name: 'Product 3', price: 4.99, quantity: 4 },
-  ]);
+
+  var dataVar;
+  const [fetchedItems, setFetchedItems] = useState([]);
+  // if user is signed in
+  // Fetch the cart data when the component mounts
+  useEffect(() => {
+    if (user && Object.keys(user).length > 0) {
+      const fetchCartData = async () => {
+        let itemVar = []; // Declare itemVar inside the useEffect block
+        try {
+          const { data } = await axios.get(`${API_URL}/cart/${user._id}`); //display user's cart
+          dataVar = data;
+          // setCartItems(data); // Update the cartItems state with the fetched data
+          for (let i = 0; i < dataVar.length; i++) {
+            // console.log(dataVar[i]);
+            const { data: item } = await axios.get(
+              `${API_URL_INVENTORY}/get-product/${dataVar[i]}`
+            );
+            const obj = {
+              id: item._id,
+              name: item.name,
+              price: item.price,
+              quantity: 1,
+            };
+            itemVar.push(obj);
+          }
+          setFetchedItems(itemVar);
+          setCartItems(itemVar);
+        } catch (error) {
+          alert('Error');
+        }
+      };
+      fetchCartData();
+    } else {
+      console.log("We're here");
+    }
+  }, [user]);
+
+  const [cartItems, setCartItems] = useState([]);
 
   const handleQuantityChange = (itemId, newQuantity) => {
     const updatedCartItems = cartItems.map((item) => {
@@ -103,24 +141,25 @@ const Cart = () => {
   };
 
   const handleLoyaltyChange = (points) => {
-    
-    if (points >= 0 && points <= user.loyaltyPoints)
-    {
+    if (points >= 0 && points <= user.loyaltyPoints) {
       setLoyaltyPoints(points);
     }
-  }
+  };
 
   const handleCheckout = (total, loyaltyPoints) => {
-      // this block needed for frontend loyalty points updating
-      var userInfo = JSON.parse(localStorage.getItem("userInfo"));
-      userInfo.loyaltyPoints = userInfo.loyaltyPoints - loyaltyPoints;
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      // end block
-      // Add other checkout handling below - pass the total and loyalty points to the checkout page and navigate there.
-  }
+    // this block needed for frontend loyalty points updating
+    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    userInfo.loyaltyPoints = userInfo.loyaltyPoints - loyaltyPoints;
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    // end block
+    // Add other checkout handling below - pass the total and loyalty points to the checkout page and navigate there.
+  };
 
   const subtotal = cartItems.reduce(
-    (total, item) => total + (item.price * item.quantity) - (loyaltyPoints * 0.1 / cartItems.length),
+    (total, item) =>
+      total +
+      item.price * item.quantity -
+      (loyaltyPoints * 0.1) / cartItems.length,
     0
   );
 
@@ -183,21 +222,19 @@ const Cart = () => {
                 </TableCell>
                 <TableCell align="right">
                   <TextField
-                      className={classes.input}
-                      type="number"
-                      min="0"
-                      value={loyaltyPoints}
-                      onChange={(e) =>
-                        handleLoyaltyChange(parseInt(e.target.value))
-                      }
-                      inputProps={{
-                        style: { textAlign: 'right' },
-                      }}
-                    />
+                    className={classes.input}
+                    type="number"
+                    min="0"
+                    value={loyaltyPoints}
+                    onChange={(e) =>
+                      handleLoyaltyChange(parseInt(e.target.value))
+                    }
+                    inputProps={{
+                      style: { textAlign: 'right' },
+                    }}
+                  />
                 </TableCell>
-                <TableCell align="right">
-
-                </TableCell>
+                <TableCell align="right"></TableCell>
               </TableRow>
               <TableRow>
                 <TableCell colSpan="3" align="right">
@@ -228,7 +265,12 @@ const Cart = () => {
           </Table>
         </TableContainer>
       )}
-      <Button variant="contained" color="primary" className={classes.button}  onClick={() => handleCheckout((subtotal * 1.1), loyaltyPoints)}>
+      <Button
+        variant="contained"
+        color="primary"
+        className={classes.button}
+        onClick={() => handleCheckout(subtotal * 1.1, loyaltyPoints)}
+      >
         Checkout
       </Button>
     </div>

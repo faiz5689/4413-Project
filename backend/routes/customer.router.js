@@ -117,11 +117,11 @@ customerRouter.post(
 //post request to add item to cart
 customerRouter.post(
   '/add-to-cart/:id',
-  isAuth,
+  // isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;
-    const product = await Inventory.findOne({ name: req.body.name }); //finds product with given name
+    const product = await Inventory.findOne({ _id: req.body.id }); //finds product with given id
 
     //handle error
     if (product == null) {
@@ -172,7 +172,7 @@ customerRouter.post(
 //post request to show entire customer's cart
 customerRouter.get(
   '/cart/:id',
-  isAuth,
+  // isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;

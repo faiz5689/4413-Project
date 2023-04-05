@@ -21,7 +21,7 @@
   max-width: 45%; /* Set a max-width to prevent the div from stretching too much on larger screens */
   box-shadow: 2px 2px 4px rgb(0, 0, 0);
   position: fixed;
-  left: 25rem;
+  margin-left: 25rem;
 }
 
 .content-div {
