@@ -79,7 +79,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Cart = () => {
   const classes = useStyles();
-
+  var user = JSON.parse(localStorage.getItem("userInfo"));
+  const [loyaltyPoints, setLoyaltyPoints] = useState(0);
   const [cartItems, setCartItems] = useState([
     { id: 1, name: 'Product 1', price: 10.99, quantity: 2 },
     { id: 2, name: 'Product 2', price: 19.99, quantity: 1 },
@@ -101,8 +102,25 @@ const Cart = () => {
     setCartItems(updatedCartItems);
   };
 
+  const handleLoyaltyChange = (points) => {
+    
+    if (points >= 0 && points <= user.loyaltyPoints)
+    {
+      setLoyaltyPoints(points);
+    }
+  }
+
+  const handleCheckout = (total, loyaltyPoints) => {
+      // this block needed for frontend loyalty points updating
+      var userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      userInfo.loyaltyPoints = userInfo.loyaltyPoints - loyaltyPoints;
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      // end block
+      // Add other checkout handling below - pass the total and loyalty points to the checkout page and navigate there.
+  }
+
   const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + (item.price * item.quantity) - (loyaltyPoints * 0.1 / cartItems.length),
     0
   );
 
@@ -161,6 +179,28 @@ const Cart = () => {
               ))}
               <TableRow>
                 <TableCell colSpan="3" align="right">
+                  Use Loyalty Points:
+                </TableCell>
+                <TableCell align="right">
+                  <TextField
+                      className={classes.input}
+                      type="number"
+                      min="0"
+                      value={loyaltyPoints}
+                      onChange={(e) =>
+                        handleLoyaltyChange(parseInt(e.target.value))
+                      }
+                      inputProps={{
+                        style: { textAlign: 'right' },
+                      }}
+                    />
+                </TableCell>
+                <TableCell align="right">
+
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell colSpan="3" align="right">
                   Subtotal:
                 </TableCell>
                 <TableCell align="right">${subtotal.toFixed(2)}</TableCell>
@@ -168,7 +208,7 @@ const Cart = () => {
               </TableRow>
               <TableRow>
                 <TableCell colSpan="3" align="right">
-                  Tax (10%):
+                  Tax: (10%):
                 </TableCell>
                 <TableCell align="right">
                   ${(subtotal * 0.1).toFixed(2)}
@@ -188,7 +228,7 @@ const Cart = () => {
           </Table>
         </TableContainer>
       )}
-      <Button variant="contained" color="primary" className={classes.button}>
+      <Button variant="contained" color="primary" className={classes.button}  onClick={() => handleCheckout((subtotal * 1.1), loyaltyPoints)}>
         Checkout
       </Button>
     </div>

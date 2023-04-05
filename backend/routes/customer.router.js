@@ -42,6 +42,7 @@ customerRouter.post(
           _id: customer._id,
           username: customer.username,
           isAdmin: customer.isAdmin,
+          loyaltyPoints: customer.loyaltyPoints,
         });
         return;
       } else {
