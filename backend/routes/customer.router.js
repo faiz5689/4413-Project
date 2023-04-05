@@ -169,7 +169,7 @@ customerRouter.post(
 );
 
 //post request to show entire customer's cart
-customerRouter.post(
+customerRouter.get(
   '/cart/:id',
   isAuth,
   expressAsyncHandler(async (req, res) => {

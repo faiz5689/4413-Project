@@ -45,13 +45,6 @@ export default function Products() {
 
   return (
     <div className="products-page">
-      <video
-        className="background-video"
-        src={backgroundVideo}
-        autoPlay
-        muted
-        loop
-      ></video>
       <div className="filtering-div">
         <div className="sort">
           <label>Sort by: </label>
@@ -128,7 +121,7 @@ export default function Products() {
       </div>
       <div className="content-div">
         <div></div>
-        <h2 className="headline">All Products</h2>
+        <h2 className="headline"> </h2>
         {error ? (
           <h3>{error}</h3>
         ) : (

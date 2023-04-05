@@ -13,6 +13,9 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import Axios from 'axios';
+
+const API_URL = 'http://localhost:4000/api/customer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
