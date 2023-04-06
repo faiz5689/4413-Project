@@ -24,7 +24,7 @@ customerRouter.post(
           domain: 'localhost',
           httpOnly: true,
           sameSite: 'Strict',
-          secure: true,
+          //secure: true,
         };
         // Maybe also add redirect to home here??
         const cook = res.cookie('token', newToken, cookieOptions);
@@ -117,7 +117,7 @@ customerRouter.post(
 //post request to add item to cart
 customerRouter.post(
   '/add-to-cart/:id',
-  // isAuth,
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;
@@ -209,7 +209,7 @@ customerRouter.post(
 //post request to add item to cart
 customerRouter.post(
   '/remove-from-cart/:id',
-  // isAuth,
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;
@@ -237,7 +237,7 @@ customerRouter.post(
 //post request to show entire customer's cart
 customerRouter.get(
   '/cart/:id',
-  // isAuth,
+   isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;

@@ -37,7 +37,7 @@ export default function ProductDetails(props) {
           {
             id: productId,
           }
-        );
+        , { withCredentials: true });
         alert('Item added to cart!');
       } catch (error) {
         alert('Error adding item to cart.');

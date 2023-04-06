@@ -95,14 +95,14 @@ const Cart = () => {
     if (user && Object.keys(user).length > 0) {
       const fetchCartData = async () => {
         try {
-          const { data } = await axios.get(`${API_URL}/cart/${user._id}`); //display user's cart
+          const { data } = await axios.get(`${API_URL}/cart/${user._id}`, { withCredentials: true }); //display user's cart
           const fetchedItems = [];
           for (let i = 0; i < data.length; i++) {
             console.log('DATA[i] IS ' + data[i]);
             if (data[i] != null) {
               const { data: item } = await axios.get(
                 `${API_URL_INVENTORY}/get-product/${data[i]}`
-              );
+               , { withCredentials: true });
 
               const obj = {
                 id: item._id,
@@ -149,7 +149,7 @@ const Cart = () => {
         console.log('USER ID' + currentItem._id);
         await axios.post(`${API_URL}/add-to-cart-copy/${user._id}`, {
           name: currentItem.name,
-        });
+        }, { withCredentials: true });
       } catch (error) {
         console.error('Error adding item to cart:', error);
         return;
@@ -162,7 +162,7 @@ const Cart = () => {
       try {
         await axios.post(`${API_URL}/remove-one/${user._id}`, {
           name: currentItem.name,
-        });
+        }, { withCredentials: true });
       } catch (error) {
         console.error('Error removing item from cart:', error);
         return;
@@ -187,7 +187,7 @@ const Cart = () => {
     try {
       await axios.post(`${API_URL}/remove-from-cart/${user._id}`, {
         name: itemToRemove.name,
-      });
+      }, { withCredentials: true });
     } catch (error) {
       console.error('Error removing item from cart:', error);
     }
