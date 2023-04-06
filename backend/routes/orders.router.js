@@ -9,7 +9,7 @@ const ordersRouter = express.Router();
 
 ordersRouter.post(
   '/checkout/:id',
-  isAuth,
+  // isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;
@@ -23,22 +23,21 @@ ordersRouter.post(
     var currLoyaltyPoints = customer.loyaltyPoints;
 
     // check if the customer has enough loyalty points for their request
-    if (currLoyaltyPoints < loyaltyPointsPaymentAmount)
-    {
-      res.status(403).send({ message: "You don't have enough loyalty points for this request!"});
+    if (currLoyaltyPoints < loyaltyPointsPaymentAmount) {
+      res.status(403).send({
+        message: "You don't have enough loyalty points for this request!",
+      });
       return;
-    }
-    else
-    {
-      finalCartPrice = fullCartPrice - (loyaltyPointsPaymentAmount / 10);
-      if (finalCartPrice < 0)
-      {
+    } else {
+      finalCartPrice = fullCartPrice - loyaltyPointsPaymentAmount / 10;
+      if (finalCartPrice < 0) {
         finalCartPrice = 0;
       }
     }
 
     var discount = fullCartPrice - finalCartPrice;
-    var updatedLoyaltyPoints = currLoyaltyPoints + (fullCartPrice) - loyaltyPointsPaymentAmount;
+    var updatedLoyaltyPoints =
+      currLoyaltyPoints + fullCartPrice - loyaltyPointsPaymentAmount;
 
     const order = new Order({
       orderItems: cartCust,
@@ -53,7 +52,12 @@ ordersRouter.post(
 
     await Customer.updateOne(
       { _id: customer._id },
-      { $set: { pastOrders: pastOrdersCust, loyaltyPoints: updatedLoyaltyPoints } }
+      {
+        $set: {
+          pastOrders: pastOrdersCust,
+          loyaltyPoints: updatedLoyaltyPoints,
+        },
+      }
     );
 
     //after the order is sent, clear the customers cart
@@ -63,7 +67,7 @@ ordersRouter.post(
       { $set: { cart: customer.cart } }
     );
 
-    res.send({ 
+    res.send({
       message: 'Your Order has been processed',
       fullPrice: fullCartPrice,
       finalPrice: finalCartPrice,

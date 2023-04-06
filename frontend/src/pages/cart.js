@@ -2,6 +2,8 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
+import { Box } from '@mui/system';
+import { Link } from 'react-router-dom';
 import {
   Table,
   TableBody,
@@ -85,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
 const Cart = () => {
   const navigate = useNavigate();
   const classes = useStyles();
-  var user = JSON.parse(localStorage.getItem('userInfo'));
+  var user = JSON.parse(localStorage.getItem('userInfo')); //gets user from localStorage
   const [loyaltyPoints, setLoyaltyPoints] = useState(0);
 
   var dataVar;
@@ -97,14 +99,19 @@ const Cart = () => {
     if (user && Object.keys(user).length > 0) {
       const fetchCartData = async () => {
         try {
-          const { data } = await axios.get(`${API_URL}/cart/${user._id}`, { withCredentials: true }); //display user's cart
+          const { data } = await axios.get(`${API_URL}/cart/${user._id}`, {
+            withCredentials: true,
+          }); //display user's cart
           const fetchedItems = [];
           for (let i = 0; i < data.length; i++) {
             console.log('DATA[i] IS ' + data[i]);
             if (data[i] != null) {
-              const { data: item } = await axios.get(
-                `${API_URL_INVENTORY}/get-product/${data[i]}`
-               , { withCredentials: true });
+              const {
+                data: item,
+              } = await axios.get(
+                `${API_URL_INVENTORY}/get-product/${data[i]}`,
+                { withCredentials: true }
+              );
 
               const obj = {
                 id: item._id,
@@ -149,9 +156,13 @@ const Cart = () => {
       try {
         console.log('USER ID' + user._id);
         console.log('USER ID' + currentItem._id);
-        await axios.post(`${API_URL}/add-to-cart-copy/${user._id}`, {
-          name: currentItem.name,
-        }, { withCredentials: true });
+        await axios.post(
+          `${API_URL}/add-to-cart-copy/${user._id}`,
+          {
+            name: currentItem.name,
+          },
+          { withCredentials: true }
+        );
       } catch (error) {
         console.error('Error adding item to cart:', error);
         return;
@@ -162,9 +173,13 @@ const Cart = () => {
     else if (newQuantity < currentItem.quantity) {
       // Remove item from cart
       try {
-        await axios.post(`${API_URL}/remove-one/${user._id}`, {
-          name: currentItem.name,
-        }, { withCredentials: true });
+        await axios.post(
+          `${API_URL}/remove-one/${user._id}`,
+          {
+            name: currentItem.name,
+          },
+          { withCredentials: true }
+        );
       } catch (error) {
         console.error('Error removing item from cart:', error);
         return;
@@ -187,9 +202,13 @@ const Cart = () => {
     if (!itemToRemove) return;
 
     try {
-      await axios.post(`${API_URL}/remove-from-cart/${user._id}`, {
-        name: itemToRemove.name,
-      }, { withCredentials: true });
+      await axios.post(
+        `${API_URL}/remove-from-cart/${user._id}`,
+        {
+          name: itemToRemove.name,
+        },
+        { withCredentials: true }
+      );
     } catch (error) {
       console.error('Error removing item from cart:', error);
     }
@@ -205,16 +224,19 @@ const Cart = () => {
   };
 
   const handleCheckout = (total, loyaltyPoints) => {
-      // this block needed for frontend loyalty points updating
-      var userInformation = JSON.parse(localStorage.getItem("userInfo"));
-      userInformation.loyaltyPoints = userInformation.loyaltyPoints - loyaltyPoints;
-      localStorage.setItem("userInfo", JSON.stringify(userInformation));
-      
-      // end block
-      // Add other checkout handling below - pass the total - actual total WITHOUT LOYALTY POINTS DISCOUNT - and loyalty points to the checkout page and navigate there.
-      // because we don't want to discount twice - at the frontend and the backend.
-      // that's why we pass subtotal * 1.1 + loyaltyPoints * 0.1 to this function (subtotal + tax + no loyalty points discount)
-      navigate('/checkout');
+    // this block needed for frontend loyalty points updating
+    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    userInfo.loyaltyPoints = userInfo.loyaltyPoints - loyaltyPoints;
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    // end block
+    // navigate({
+    //   pathname: '/checkout',
+    //   state: {
+    //     totalPrice: totalPrice,
+    //     totalLoyaltyPoints: totalLoyaltyPoints,
+    //   },
+    // });
+    // Add other checkout handling below - pass the total and loyalty points to the checkout page and navigate there.
   };
 
   const subtotal = cartItems.reduce(
@@ -231,7 +253,9 @@ const Cart = () => {
         Your Cart
       </Typography>
       {cartItems.length === 0 ? (
-        <Typography variant="body1">Your cart is empty</Typography>
+        <Typography variant="body1" textAlign="center">
+          Your cart is empty
+        </Typography>
       ) : (
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="Cart Table">
@@ -327,14 +351,35 @@ const Cart = () => {
           </Table>
         </TableContainer>
       )}
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.button}
-        onClick={() => handleCheckout((subtotal * 1.1) + (0.1 * loyaltyPoints), loyaltyPoints)}
-      >
-        Checkout
-      </Button>
+      <Box textAlign="center">
+        {cartItems.length === 0 ? (
+          <Button
+            component={Link}
+            to="/products"
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            Browse Products
+          </Button>
+        ) : (
+          <Button
+            component={Link}
+            to="/checkout"
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() =>
+              handleCheckout(
+                subtotal * 1.1 + 0.1 * loyaltyPoints,
+                loyaltyPoints
+              )
+            }
+          >
+            Checkout
+          </Button>
+        )}
+      </Box>
     </div>
   );
 };
