@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import {
   Table,
@@ -82,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Cart = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
   var user = JSON.parse(localStorage.getItem('userInfo'));
   const [loyaltyPoints, setLoyaltyPoints] = useState(0);
@@ -203,12 +205,16 @@ const Cart = () => {
   };
 
   const handleCheckout = (total, loyaltyPoints) => {
-    // this block needed for frontend loyalty points updating
-    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    userInfo.loyaltyPoints = userInfo.loyaltyPoints - loyaltyPoints;
-    localStorage.setItem('userInfo', JSON.stringify(userInfo));
-    // end block
-    // Add other checkout handling below - pass the total and loyalty points to the checkout page and navigate there.
+      // this block needed for frontend loyalty points updating
+      var userInformation = JSON.parse(localStorage.getItem("userInfo"));
+      userInformation.loyaltyPoints = userInformation.loyaltyPoints - loyaltyPoints;
+      localStorage.setItem("userInfo", JSON.stringify(userInformation));
+      
+      // end block
+      // Add other checkout handling below - pass the total - actual total WITHOUT LOYALTY POINTS DISCOUNT - and loyalty points to the checkout page and navigate there.
+      // because we don't want to discount twice - at the frontend and the backend.
+      // that's why we pass subtotal * 1.1 + loyaltyPoints * 0.1 to this function (subtotal + tax + no loyalty points discount)
+      navigate('/checkout');
   };
 
   const subtotal = cartItems.reduce(
@@ -325,7 +331,7 @@ const Cart = () => {
         variant="contained"
         color="primary"
         className={classes.button}
-        onClick={() => handleCheckout(subtotal * 1.1, loyaltyPoints)}
+        onClick={() => handleCheckout((subtotal * 1.1) + (0.1 * loyaltyPoints), loyaltyPoints)}
       >
         Checkout
       </Button>
