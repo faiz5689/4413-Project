@@ -86,10 +86,12 @@ export default function ProductDetails(props) {
             </div>
 
             <div class="product-price">
-              <span>${product.price}</span>
-              <button class="cart-btn" onClick={addToCartHandler}>
-                Add to cart
-              </button>
+              <span>${product.price}</span> 
+              {user ? 
+                    ( <button class="cart-btn" onClick={addToCartHandler}>
+                        Add to cart
+                      </button>) :
+                    (<span>Login to add products to cart</span>)}
             </div>
           </div>
         </div>
