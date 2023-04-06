@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 
-//Customer URL
+//Customer URL: Fixed file
 const API_URL = 'http://localhost:4000/api/users';
 const API_URL_INVENTORY = 'http://localhost:4000/api/inventory';
 
