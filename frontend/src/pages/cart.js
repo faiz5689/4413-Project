@@ -90,70 +90,86 @@ const Cart = () => {
   const [fetchedItems, setFetchedItems] = useState([]);
   // if user is signed in
   // Fetch the cart data when the component mounts
+  let quantityVar = 1;
   useEffect(() => {
     if (user && Object.keys(user).length > 0) {
       const fetchCartData = async () => {
-        let itemVar = []; // Declare itemVar inside the useEffect block
         try {
           const { data } = await axios.get(`${API_URL}/cart/${user._id}`); //display user's cart
-          dataVar = data;
-          // setCartItems(data); // Update the cartItems state with the fetched data
-          for (let i = 0; i < dataVar.length; i++) {
-            // console.log(dataVar[i]);
-            const { data: item } = await axios.get(
-              `${API_URL_INVENTORY}/get-product/${dataVar[i]}`
-            );
-            const obj = {
-              id: item._id,
-              name: item.name,
-              price: item.price,
-              quantity: 1,
-            };
-            itemVar.push(obj);
+          const fetchedItems = [];
+          for (let i = 0; i < data.length; i++) {
+            console.log('DATA[i] IS ' + data[i]);
+            if (data[i] != null) {
+              const { data: item } = await axios.get(
+                `${API_URL_INVENTORY}/get-product/${data[i]}`
+              );
+
+              const obj = {
+                id: item._id,
+                name: item.name,
+                price: item.price,
+                quantity: 1,
+              };
+
+              const existingItemIndex = fetchedItems.findIndex(
+                (item) => item.id === obj.id
+              );
+
+              if (existingItemIndex !== -1) {
+                fetchedItems[existingItemIndex].quantity += 1;
+              } else {
+                fetchedItems.push(obj);
+              }
+            }
           }
-          setFetchedItems(itemVar);
-          setCartItems(itemVar);
+
+          setCartItems(fetchedItems);
         } catch (error) {
           alert('Error');
         }
       };
+
       fetchCartData();
-    } else {
-      console.log("We're here");
     }
-  }, [user]);
+  }, [user && user._id]); // Change this line
 
   const [cartItems, setCartItems] = useState([]);
 
   const handleQuantityChange = async (itemId, newQuantity) => {
-    const currentItem = cartItems.find((item) => item.id === itemId);
+    if (newQuantity < 1) return; //remove everything from cart
 
-    if (currentItem) {
-      const quantityDifference = newQuantity - currentItem.quantity;
+    const currentItem = cartItems.find((item) => item.id === itemId); //find current item
+    if (!currentItem) return;
 
-      if (quantityDifference > 0) {
-        for (let i = 0; i < quantityDifference; i++) {
-          try {
-            await axios.post(`${API_URL}/add-to-cart/${user._id}`, {
-              id: itemId,
-            });
-          } catch (error) {
-            console.error('Error adding item to cart:', error);
-          }
-        }
-      } else if (quantityDifference < 0) {
-        for (let i = 0; i < -quantityDifference; i++) {
-          try {
-            await axios.post(`${API_URL}/remove-from-cart/${user._id}`, {
-              name: currentItem.name,
-            });
-          } catch (error) {
-            console.error('Error removing item from cart:', error);
-          }
-        }
+    //Up arrow
+    if (newQuantity > currentItem.quantity) {
+      // Add item to cart
+      try {
+        console.log('USER ID' + user._id);
+        console.log('USER ID' + currentItem._id);
+        await axios.post(`${API_URL}/add-to-cart-copy/${user._id}`, {
+          name: currentItem.name,
+        });
+      } catch (error) {
+        console.error('Error adding item to cart:', error);
+        return;
       }
     }
 
+    //Down arrow
+    else if (newQuantity < currentItem.quantity) {
+      // Remove item from cart
+      try {
+        await axios.post(`${API_URL}/remove-one/${user._id}`, {
+          name: currentItem.name,
+        });
+      } catch (error) {
+        console.error('Error removing item from cart:', error);
+        return;
+      }
+    }
+
+    // Update cart items in local state
     const updatedCartItems = cartItems.map((item) => {
       if (item.id === itemId) {
         return { ...item, quantity: newQuantity };
@@ -165,7 +181,6 @@ const Cart = () => {
   };
 
   const handleRemoveItem = async (itemId) => {
-    console.log('Trying to remove');
     const itemToRemove = cartItems.find((item) => item.id === itemId);
     if (!itemToRemove) return;
 

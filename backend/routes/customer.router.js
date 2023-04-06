@@ -143,6 +143,71 @@ customerRouter.post(
 
 //post request to add item to cart
 customerRouter.post(
+  '/add-to-cart-copy/:id',
+  // isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
+    var cartCust = customer.cart;
+    const product = await Inventory.findOne({ name: req.body.name }); //finds product with given id
+
+    //handle error
+    if (product == null) {
+      res.send('Cannot add to cart. Please select a valid product');
+    }
+    //add item to customer's cart
+    cartCust.push(product);
+
+    //update database
+    await Customer.updateOne(
+      { _id: customer._id },
+      { $set: { cart: cartCust } }
+    );
+
+    //send entire customer
+    res.send(customer);
+  })
+);
+
+//post request to add item to cart
+//post request to remove one item from cart
+customerRouter.post(
+  '/remove-one/:id',
+  // isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
+    var cartCust = customer.cart;
+    const product = await Inventory.findOne({ name: req.body.name }); //finds product with given id
+
+    //handle error
+    if (product == null) {
+      res.send('Cannot remove from cart. Please select a valid product');
+    }
+
+    //find the index of the first occurrence of the product in the cart
+    const index = cartCust.findIndex(
+      (item) => item._id.toString() === product._id.toString()
+    );
+
+    //remove the item if it's found in the cart
+    if (index > -1) {
+      cartCust.splice(index, 1);
+
+      //update database
+      await Customer.updateOne(
+        { _id: customer._id },
+        { $set: { cart: cartCust } }
+      );
+
+      //send entire customer
+      res.send(customer);
+    } else {
+      res.send('Product not found in cart.');
+    }
+  })
+);
+
+//post request to add item to cart
+customerRouter.post(
   '/remove-from-cart/:id',
   // isAuth,
   expressAsyncHandler(async (req, res) => {
