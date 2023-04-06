@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signout } from '../../actions/user.actions.js';
@@ -17,6 +17,12 @@ const Header = () => {
   const pathName = useLocation();
   const dispatch = useDispatch();
   var user = localStorage.getItem('username');
+  const [userInfo, setUserInfo] = useState();
+  var points = "";
+  if (user)
+  {
+    points = JSON.parse(localStorage.getItem("userInfo")).loyaltyPoints;
+  }
 
   const handleLogout = (e) => {
     if (user) {
@@ -39,6 +45,22 @@ const Header = () => {
       <Tab key="checkout" component={Link} to="/checkout" label="Checkout" />
     );
   }
+
+  useEffect(() => {
+    function checkUserData() {
+      const item = localStorage.getItem('userInfo');
+  
+      if (item) {
+        setUserInfo(item);
+      }
+    }
+  
+    window.addEventListener('storage', checkUserData)
+  
+    return () => {
+      window.removeEventListener('storage', checkUserData)
+    }
+  }, [])
 
   return (
     <React.Fragment>
@@ -70,7 +92,7 @@ const Header = () => {
               onClick={() => setValue(false)}
               component={Link}
               to="/cart"
-              sx={{ color: 'white', marginLeft: '20%' }}
+              sx={{ color: 'white', marginLeft: '15%' }}
             >
               <ShoppingCartIcon />
             </IconButton>
@@ -80,7 +102,7 @@ const Header = () => {
 
           {user ? (
             <>
-              Welcome, {user}
+              Welcome, {user} - Points: {points}
               <Button
                 onClick={handleLogout}
                 component={Link}
