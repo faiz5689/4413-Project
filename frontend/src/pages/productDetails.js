@@ -94,7 +94,7 @@ export default function ProductDetails(props) {
           </div>
         </div>
       )}
-      <div style={{ margin: 100 }}>
+      {/* <div style={{ margin: 100 }}>
         <h1>Reviews:</h1>
         <ul style={{ listStyleType: 'none', padding: 0 }}>
           {product.reviews?.map((review, index) => (
@@ -171,7 +171,7 @@ export default function ProductDetails(props) {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 }

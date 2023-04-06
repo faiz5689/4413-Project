@@ -144,7 +144,7 @@ customerRouter.post(
 //post request to add item to cart
 customerRouter.post(
   '/remove-from-cart/:id',
-  isAuth,
+  // isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;

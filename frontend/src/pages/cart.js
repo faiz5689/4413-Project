@@ -125,17 +125,58 @@ const Cart = () => {
 
   const [cartItems, setCartItems] = useState([]);
 
-  const handleQuantityChange = (itemId, newQuantity) => {
+  const handleQuantityChange = async (itemId, newQuantity) => {
+    const currentItem = cartItems.find((item) => item.id === itemId);
+
+    if (currentItem) {
+      const quantityDifference = newQuantity - currentItem.quantity;
+
+      if (quantityDifference > 0) {
+        for (let i = 0; i < quantityDifference; i++) {
+          try {
+            await axios.post(`${API_URL}/add-to-cart/${user._id}`, {
+              id: itemId,
+            });
+          } catch (error) {
+            console.error('Error adding item to cart:', error);
+          }
+        }
+      } else if (quantityDifference < 0) {
+        for (let i = 0; i < -quantityDifference; i++) {
+          try {
+            await axios.post(`${API_URL}/remove-from-cart/${user._id}`, {
+              name: currentItem.name,
+            });
+          } catch (error) {
+            console.error('Error removing item from cart:', error);
+          }
+        }
+      }
+    }
+
     const updatedCartItems = cartItems.map((item) => {
       if (item.id === itemId) {
         return { ...item, quantity: newQuantity };
       }
       return item;
     });
+
     setCartItems(updatedCartItems);
   };
 
-  const handleRemoveItem = (itemId) => {
+  const handleRemoveItem = async (itemId) => {
+    console.log('Trying to remove');
+    const itemToRemove = cartItems.find((item) => item.id === itemId);
+    if (!itemToRemove) return;
+
+    try {
+      await axios.post(`${API_URL}/remove-from-cart/${user._id}`, {
+        name: itemToRemove.name,
+      });
+    } catch (error) {
+      console.error('Error removing item from cart:', error);
+    }
+
     const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
     setCartItems(updatedCartItems);
   };
