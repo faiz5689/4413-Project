@@ -9,7 +9,7 @@ const ordersRouter = express.Router();
 
 ordersRouter.post(
   '/checkout/:id',
-  // isAuth,
+   isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;
@@ -37,8 +37,12 @@ ordersRouter.post(
 
     var discount = fullCartPrice - finalCartPrice;
     var updatedLoyaltyPoints =
-      currLoyaltyPoints + fullCartPrice - loyaltyPointsPaymentAmount;
+      Math.round(currLoyaltyPoints + (fullCartPrice * 0.5) - loyaltyPointsPaymentAmount);
 
+    if (updatedLoyaltyPoints < 0)
+    {
+      updatedLoyaltyPoints = 0;
+    }
     const order = new Order({
       orderItems: cartCust,
       totalPrice: finalCartPrice,
@@ -55,7 +59,7 @@ ordersRouter.post(
       {
         $set: {
           pastOrders: pastOrdersCust,
-          loyaltyPoints: updatedLoyaltyPoints,
+          loyaltyPoints:updatedLoyaltyPoints,
         },
       }
     );
@@ -72,7 +76,7 @@ ordersRouter.post(
       fullPrice: fullCartPrice,
       finalPrice: finalCartPrice,
       discount: discount,
-      loyaltyPointsUsed: loyaltyPointsPaymentAmount,
+      loyaltyPointsTotal: updatedLoyaltyPoints,
     });
   })
 );

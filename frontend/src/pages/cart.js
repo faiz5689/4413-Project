@@ -215,17 +215,15 @@ const Cart = () => {
     setCartItems(updatedCartItems);
   };
 
-  const handleLoyaltyChange = (points) => {
-    if (points >= 0 && points <= user.loyaltyPoints) {
+  const handleLoyaltyChange = (subtotal, points) => {
+    if (points >= 0 && points <= user.loyaltyPoints && subtotal >= 1) {
       setLoyaltyPoints(points);
+      localStorage.setItem('loyPtsUsed', points);
     }
   };
 
   const handleCheckout = (total, loyaltyPoints) => {
     // this block needed for frontend loyalty points updating
-    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    userInfo.loyaltyPoints = userInfo.loyaltyPoints - loyaltyPoints;
-    localStorage.setItem('userInfo', JSON.stringify(userInfo));
     // end block
     // navigate({
     //   pathname: '/checkout',
@@ -311,7 +309,7 @@ const Cart = () => {
                     min="0"
                     value={loyaltyPoints}
                     onChange={(e) =>
-                      handleLoyaltyChange(parseInt(e.target.value))
+                      handleLoyaltyChange(subtotal, parseInt(e.target.value))
                     }
                     inputProps={{
                       style: { textAlign: 'right' },

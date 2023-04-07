@@ -57,6 +57,7 @@ export default class Checkout extends React.Component {
     e.preventDefault();
     alert('You have finished payment!');
     this.form.reset();
+    window.location.href = '/';
   };
 
   render() {
@@ -185,15 +186,16 @@ export default class Checkout extends React.Component {
 }
 
 const handleCheckoutFunc = async () => {
+  // store used loyaltyPts here, then pass them to backend
   var user = JSON.parse(localStorage.getItem('userInfo')); //gets user from localStorage
+  var loyPts = localStorage.getItem('loyPtsUsed');
   try {
-    await axios.post(
-      `${API_URL}/checkout/${user._id}`,
-      {
-        loyaltyPoints: 0,
-      },
-      { withCredentials: true }
-    );
+    const { data } = await axios.post(`${API_URL}/checkout/${user._id}`, {
+      loyaltyPoints: loyPts,
+    }, { withCredentials: true });
+    user.loyaltyPoints = data.loyaltyPointsTotal;
+    localStorage.setItem('userInfo', JSON.stringify(user));
+    localStorage.setItem('loyPtsUsed', 0);
   } catch (error) {
     console.error('Error checking out:', error);
   }
