@@ -144,7 +144,7 @@ customerRouter.post(
 //post request to add item to cart
 customerRouter.post(
   '/add-to-cart-copy/:id',
-  // isAuth,
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;
@@ -172,7 +172,7 @@ customerRouter.post(
 //post request to remove one item from cart
 customerRouter.post(
   '/remove-one/:id',
-  // isAuth,
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;
@@ -237,7 +237,7 @@ customerRouter.post(
 //post request to show entire customer's cart
 customerRouter.get(
   '/cart/:id',
-   isAuth,
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     var cartCust = customer.cart;
@@ -293,6 +293,23 @@ customerRouter.post(
     );
 
     res.send('New name is: ' + newName);
+  })
+);
+
+//returns true if customer is admin, false otherwise
+customerRouter.get(
+  '/is-cust-admin/:id',
+  // isAuth,
+  expressAsyncHandler(async (req, res) => {
+    //Before starting: get user by ID
+    const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
+    var isAdministrator = false;
+
+    if (customer.isAdmin) {
+      isAdministrator = true;
+    }
+
+    res.send(isAdministrator);
   })
 );
 

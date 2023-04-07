@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/system';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import {
   Table,
   TableBody,
@@ -16,7 +17,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import axios from 'axios';
 
 //Customer URL: Fixed file
 const API_URL = 'http://localhost:4000/api/users';
@@ -154,8 +154,6 @@ const Cart = () => {
     if (newQuantity > currentItem.quantity) {
       // Add item to cart
       try {
-        console.log('USER ID' + user._id);
-        console.log('USER ID' + currentItem._id);
         await axios.post(
           `${API_URL}/add-to-cart-copy/${user._id}`,
           {

@@ -10,6 +10,7 @@ import Tab from '@mui/material/Tab';
 import Button from '@mui/material/Button';
 import { Icon } from '@iconify/react';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const Header = () => {
   const [value, setValue] = useState();
@@ -17,11 +18,11 @@ const Header = () => {
   const pathName = useLocation();
   const dispatch = useDispatch();
   var user = localStorage.getItem('username');
+  var userInfo2 = localStorage.getItem('userInfo');
   const [userInfo, setUserInfo] = useState();
-  var points = "";
-  if (user)
-  {
-    points = JSON.parse(localStorage.getItem("userInfo")).loyaltyPoints;
+  var points = '';
+  if (user) {
+    points = JSON.parse(localStorage.getItem('userInfo')).loyaltyPoints;
   }
 
   const handleLogout = (e) => {
@@ -44,23 +45,34 @@ const Header = () => {
     tabsList.push(
       <Tab key="checkout" component={Link} to="/checkout" label="Checkout" />
     );
+    const isUserAdmin = JSON.parse(userInfo2).isAdmin;
+    if (isUserAdmin) {
+      tabsList.push(
+        <Tab
+          key="admin-view"
+          component={Link}
+          to="/admin-view"
+          label="Admin View"
+        />
+      );
+    }
   }
 
   useEffect(() => {
     function checkUserData() {
       const item = localStorage.getItem('userInfo');
-  
+
       if (item) {
         setUserInfo(item);
       }
     }
-  
-    window.addEventListener('storage', checkUserData)
-  
+
+    window.addEventListener('storage', checkUserData);
+
     return () => {
-      window.removeEventListener('storage', checkUserData)
-    }
-  }, [])
+      window.removeEventListener('storage', checkUserData);
+    };
+  }, []);
 
   return (
     <React.Fragment>

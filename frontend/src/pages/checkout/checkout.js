@@ -59,24 +59,6 @@ export default class Checkout extends React.Component {
     this.form.reset();
   };
 
-  /*
-   const handleRemoveItem = async (itemId) => {
-    const itemToRemove = cartItems.find((item) => item.id === itemId);
-    if (!itemToRemove) return;
-
-    try {
-      await axios.post(`${API_URL}/remove-from-cart/${user._id}`, {
-        name: itemToRemove.name,
-      });
-    } catch (error) {
-      console.error('Error removing item from cart:', error);
-    }
-
-    const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
-    setCartItems(updatedCartItems);
-  };
-  */
-
   render() {
     const { name, number, expiry, cvc, focused, issuer } = this.state;
 
@@ -205,9 +187,13 @@ export default class Checkout extends React.Component {
 const handleCheckoutFunc = async () => {
   var user = JSON.parse(localStorage.getItem('userInfo')); //gets user from localStorage
   try {
-    await axios.post(`${API_URL}/checkout/${user._id}`, {
-      loyaltyPoints: 0,
-    });
+    await axios.post(
+      `${API_URL}/checkout/${user._id}`,
+      {
+        loyaltyPoints: 0,
+      },
+      { withCredentials: true }
+    );
   } catch (error) {
     console.error('Error checking out:', error);
   }
