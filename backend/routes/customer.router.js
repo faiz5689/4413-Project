@@ -269,7 +269,7 @@ customerRouter.post(
       );
     }
 
-    res.send('New user is: ' + newUsername);
+    res.send(newUsername);
   })
 );
 

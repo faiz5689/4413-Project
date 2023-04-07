@@ -27,6 +27,7 @@ const ProfileView = () => {
     email: '',
     password: '',
   });
+  const [newNameInput, setNewNameInput] = useState('');
   const [newUsername, setNewUsername] = useState('');
   const [newName, setnewName] = useState(''); // New state variable for the customer name
   const [customerUsername, setCustomerUsername] = useState(''); // New state variable for the customer name
@@ -126,17 +127,14 @@ const ProfileView = () => {
         { withCredentials: true }
       );
 
-      console.log(response.data);
+      console.log('DATA IS' + response.data);
 
       // Update user information in local storage
-      const updatedUserInfo = {
-        ...JSON.parse(localStorage.getItem('userInfo')),
-        username: user.username,
-      };
+      var user = JSON.parse(localStorage.getItem('userInfo')); //gets user from localStorage
+      user.username = response.data;
+      localStorage.setItem('userInfo', JSON.stringify(user));
       setNewUsername('');
-      alert('Username updated');
-
-      localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
+      alert('Username updated. Relog back into the system to see the changes');
     } catch (error) {
       console.error('Error changing username:', error);
     }
@@ -156,7 +154,7 @@ const ProfileView = () => {
       const response = await axios.post(
         `${API_URL}/change-name/${user._id}`,
         {
-          newName,
+          newName: newNameInput,
         },
         { withCredentials: true }
       );
@@ -168,8 +166,8 @@ const ProfileView = () => {
         ...JSON.parse(localStorage.getItem('userInfo')),
         username: user.username,
       };
-      setnewName('');
-      alert('Name updated');
+      setNewNameInput('');
+      alert('Name updated. Relog back into the system to see the changes');
     } catch (error) {
       console.error('Error changing name:', error);
     }
@@ -235,14 +233,15 @@ const ProfileView = () => {
           <form className={classes.form} onSubmit={handleSubmit2}>
             <TextField
               className={classes.formElement}
-              label="New Email"
-              name="newEmail"
-              value={newEmail} // Use newUsername state value
-              onChange={handleNameChange} // Update the newUsername state
+              label="New Name"
+              name="name"
+              value={newNameInput}
+              onChange={(e) => setNewNameInput(e.target.value)}
               variant="outlined"
               size="small"
-              style={{ marginRight: '10px' }} // add margin to the right side of the textfield
+              style={{ marginRight: '10px' }}
             />
+
             <Button
               className={classes.formElement}
               variant="contained"
