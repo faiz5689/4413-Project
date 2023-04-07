@@ -117,7 +117,7 @@ const AdminView = () => {
                   <TableRow>
                     <TableCell>Item</TableCell>
                     <TableCell align="right">Quantity</TableCell>
-                    <TableCell align="right">Revenue</TableCell>
+                    <TableCell align="right">Revenue ($)</TableCell>
                     <TableCell align="right">Month</TableCell>
                     <TableCell align="right">Year</TableCell>
                   </TableRow>
