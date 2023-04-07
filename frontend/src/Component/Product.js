@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { render } from 'react-dom';
-// import { AppContainer } from 'react-hot-loader';
 import ReactAppContainer from 'react-app-container';
 import { GlassArView } from '@lastcode802/glassarview';
 
-// import '../styles/jeeliz.css';
-
-import AppCanvas from './AppCanvas';
-
 export default function Product(props) {
   const { product } = props;
-  const [showCanvas, setShowCanvas] = useState(false);
   const jeelizvto = () => {
     console.log('jello');
     render(
@@ -39,7 +33,6 @@ export default function Product(props) {
           <div className="row">
             <div className="price">${product.price}</div>
             <button onClick={jeelizvto}>Try-On</button>
-            {showCanvas && <AppCanvas />}
           </div>
         </div>
       </div>
