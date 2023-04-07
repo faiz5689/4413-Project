@@ -36,8 +36,9 @@ export default function ProductDetails(props) {
           `${API_URL}/add-to-cart/${user._id}`,
           {
             id: productId,
-          }
-        , { withCredentials: true });
+          },
+          { withCredentials: true }
+        );
         alert('Item added to cart!');
       } catch (error) {
         alert('Error adding item to cart.');
@@ -57,7 +58,12 @@ export default function ProductDetails(props) {
       ) : (
         <div className="container">
           <div class="left-side">
-            <img className="large" src={product.image} alt={product.name} />
+            <img
+              className="large"
+              src={product.image}
+              alt={product.name}
+              style={{ objectFit: 'cover', width: '65%', height: '65%' }}
+            />
           </div>
 
           <div class="right-side">
@@ -86,12 +92,14 @@ export default function ProductDetails(props) {
             </div>
 
             <div class="product-price">
-              <span>${product.price}</span> 
-              {user ? 
-                    ( <button class="cart-btn" onClick={addToCartHandler}>
-                        Add to cart
-                      </button>) :
-                    (<span>Login to add products to cart</span>)}
+              <span>${product.price}</span>
+              {user ? (
+                <button class="cart-btn" onClick={addToCartHandler}>
+                  Add to cart
+                </button>
+              ) : (
+                <span>Login to add products to cart</span>
+              )}
             </div>
           </div>
         </div>
