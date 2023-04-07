@@ -66,6 +66,13 @@ const AdminView = () => {
 
   return (
     <div>
+      <style>
+        {`
+          h1 {
+            margin: 20px;
+          }
+        `}
+      </style>
       <h1>Admin View</h1>
       <TextField
         label="Month"
@@ -73,7 +80,7 @@ const AdminView = () => {
         type="number"
         value={month}
         onChange={(e) => setMonth(e.target.value)}
-        sx={{ marginRight: '10px' }}
+        sx={{ marginLeft: '10px', marginRight: '10px' }}
       />
       <TextField
         label="Year"
@@ -129,7 +136,9 @@ const AdminView = () => {
                         {row.item}
                       </TableCell>
                       <TableCell align="right">{row.quantity}</TableCell>
-                      <TableCell align="right">{row.revenue}</TableCell>
+                      <TableCell align="right">
+                        {row.revenue.toFixed(2)}
+                      </TableCell>
                       <TableCell align="right">{row.month}</TableCell>
                       <TableCell align="right">{row.year}</TableCell>
                     </TableRow>
@@ -151,8 +160,8 @@ const AdminView = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>Month</TableCell>
-                  <TableCell align="right">Total Price</TableCell>
-                  <TableCell align="right">Count</TableCell>
+                  <TableCell align="right">Revenue ($)</TableCell>
+                  <TableCell align="right">Items Sold</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -161,7 +170,9 @@ const AdminView = () => {
                     <TableCell component="th" scope="row">
                       {row._id.month}
                     </TableCell>
-                    <TableCell align="right">{row.totalPrice}</TableCell>
+                    <TableCell align="right">
+                      {row.totalPrice.toFixed(2)}
+                    </TableCell>
                     <TableCell align="right">{row.count}</TableCell>
                   </TableRow>
                 ))}
