@@ -7,7 +7,6 @@ import { GlassArView } from '@lastcode802/glassarview';
 export default function Product(props) {
   const { product } = props;
   const jeelizvto = () => {
-    console.log('jello');
     render(
       <ReactAppContainer>
         <GlassArView
