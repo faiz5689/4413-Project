@@ -10,6 +10,7 @@ import Products from './pages/products';
 import ContactPage from './pages/contact';
 import Cart from './pages/cart';
 import ProductScreen from './pages/productDetails';
+import AdminView from './pages/admin-view';
 
 function App() {
   return (
@@ -23,9 +24,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/products" element={<Products />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/cart" element={<Cart/>}/>
-          <Route path="/products/:id" element={<ProductScreen />} exact
-            ></Route>
+          <Route path="/admin-view" element={<AdminView />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/products/:id" element={<ProductScreen />} exact></Route>
         </Routes>
       </BrowserRouter>
 

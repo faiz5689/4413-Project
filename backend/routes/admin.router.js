@@ -11,8 +11,8 @@ const adminRouter = express.Router();
 //Returns a general sales report displaying the revenue in the past month
 adminRouter.get(
   '/run-general-sales-report/:id',
-  isAuth,
-  isAdmin,
+  // isAuth,
+  // isAdmin,
   expressAsyncHandler(async (req, res) => {
     const user = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
 
@@ -53,10 +53,10 @@ adminRouter.get(
 );
 
 //Returns a specific sales report grouped by individual sunglasses, the quantity sold and the revenue each generated
-adminRouter.get(
+adminRouter.put(
   '/run-sales-report-specific/:id',
-  isAuth,
-  isAdmin,
+  // isAuth,
+  // isAdmin,
   expressAsyncHandler(async (req, res) => {
     const user = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     const month = parseInt(req.body.month);
@@ -146,10 +146,10 @@ adminRouter.get(
 );
 
 //Returns a specific sales report grouped by individual sunglasses, the quantity sold and the revenue each generated
-adminRouter.post(
+adminRouter.get(
   '/run-app-report/:id',
-  isAuth,
-  isAdmin,
+  // isAuth,
+  // isAdmin,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
     const activeUsers = await Session.count({
@@ -166,7 +166,7 @@ adminRouter.post(
         $project: {
           customer: 1,
           activeTime: {
-            $divide: [{ $subtract: ['$logout', '$login'] }, 60000],
+            $divide: [{ $subtract: ['$logout', '$login'] }, 3600000],
           },
         },
       },
@@ -192,36 +192,6 @@ adminRouter.post(
 
     const activeUsersVar = await Session.count({ logout: { $exists: false } });
     res.send(aggResult);
-
-    // const aggResult = await Session.aggregate([
-    //   {
-    //     $match: {
-    //       logout: { $ne: null },
-    //     },
-    //   },
-    //   {
-    //     $group: {
-    //       _id: '$user',
-    //       totalActiveTime: { $sum: { $subtract: ['$logout', '$login'] } },
-    //       count: { $sum: 1 },
-    //     },
-    //   },
-    //   {
-    //     $group: {
-    //       _id: null,
-    //       avgTime: { $avg: '$totalActiveTime' },
-    //       totalActiveUsers: { $sum: 1 },
-    //     },
-    //   },
-    //   {
-    //     $project: {
-    //       _id: 0,
-    //       avgTime: { $divide: ['$avgTime', 1000 * 60] },
-    //       totalActiveUsers: 1,
-    //     },
-    //   },
-    // ]);
-    // res.send(aggResult);
   })
 );
 
