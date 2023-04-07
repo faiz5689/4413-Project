@@ -11,6 +11,7 @@ import ContactPage from './pages/contact';
 import Cart from './pages/cart';
 import ProductScreen from './pages/productDetails';
 import AdminView from './pages/admin-view';
+import ProfileView from './pages/profile-view';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/admin-view" element={<AdminView />} />
+          <Route path="/profile-view" element={<ProfileView />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/products/:id" element={<ProductScreen />} exact></Route>
         </Routes>

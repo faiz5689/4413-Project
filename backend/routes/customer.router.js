@@ -168,7 +168,6 @@ customerRouter.post(
   })
 );
 
-//post request to add item to cart
 //post request to remove one item from cart
 customerRouter.post(
   '/remove-one/:id',
@@ -316,7 +315,7 @@ customerRouter.get(
 //post request to change password
 customerRouter.post(
   '/change-password/:id',
-  isAuth,
+  // isAuth,
   expressAsyncHandler(async (req, res) => {
     //Testing: Password: 123Jackie! $2a$08$JcYB/nOYpQNQgSt7MZolWuiqxMAvi451Jgyr5ENQoR8sUUDNoApZC
     //Before starting: get user by ID
@@ -348,6 +347,25 @@ customerRouter.post(
       }
     } else {
       res.send('Passwords do not match');
+    }
+  })
+);
+
+//get request to send entire customer
+// Get customer name by user id
+customerRouter.get(
+  '/get-customer/:id',
+  // isAuth,
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const customer = await Customer.findOne({ _id: req.params.id });
+      if (customer) {
+        res.send(customer);
+      } else {
+        res.status(404).send({ message: 'Customer not found' });
+      }
+    } catch (error) {
+      res.status(500).send({ message: 'Error getting customer name', error });
     }
   })
 );

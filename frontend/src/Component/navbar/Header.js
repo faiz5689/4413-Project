@@ -5,6 +5,7 @@ import { signout } from '../../actions/user.actions.js';
 import AppBar from '@mui/material/AppBar';
 import { IconButton, Toolbar, Typography } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // Import the profile icon
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Button from '@mui/material/Button';
@@ -107,6 +108,19 @@ const Header = () => {
               sx={{ color: 'white', marginLeft: '15%' }}
             >
               <ShoppingCartIcon />
+            </IconButton>
+          ) : (
+            <></>
+          )}
+
+          {user ? (
+            <IconButton
+              onClick={() => setValue(false)}
+              component={Link}
+              to="/profile-view" // Add navigation to the profile page
+              sx={{ color: 'white', marginLeft: '10px' }}
+            >
+              <AccountCircleIcon />
             </IconButton>
           ) : (
             <></>
