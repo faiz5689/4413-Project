@@ -4,6 +4,8 @@ import { render } from 'react-dom';
 import ReactAppContainer from 'react-app-container';
 import { GlassArView } from '@lastcode802/glassarview';
 
+import '../index.css';
+
 export default function Product(props) {
   const { product } = props;
   const jeelizvto = () => {
