@@ -194,20 +194,32 @@ const AdminView = () => {
                   <TableCell>Admin ID</TableCell>
                   <TableCell align="right">Average Time (hours)</TableCell>
                   <TableCell align="right">Active Users</TableCell>
+                  <TableCell align="right">Total Users</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {appUsageReport.map((row) => (
-                  <TableRow key={row._id}>
+                {appUsageReport && (
+                  <TableRow>
                     <TableCell component="th" scope="row">
-                      {row._id}
+                      {userId}
                     </TableCell>
                     <TableCell align="right">
-                      {row.avgTime.toFixed(2)}
+                      {appUsageReport.averageTime
+                        ? appUsageReport.averageTime.toFixed(2)
+                        : '-'}
                     </TableCell>
-                    <TableCell align="right">{row.activeUsers}</TableCell>
+                    <TableCell align="right">
+                      {appUsageReport.activeUsers
+                        ? appUsageReport.activeUsers
+                        : '-'}
+                    </TableCell>
+                    <TableCell align="right">
+                      {appUsageReport.totalUsers
+                        ? appUsageReport.totalUsers
+                        : '-'}
+                    </TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </TableContainer>

@@ -152,9 +152,10 @@ adminRouter.get(
   // isAdmin,
   expressAsyncHandler(async (req, res) => {
     const customer = await Customer.findOne({ _id: req.params.id }); //finds customer with given id param
-    const activeUsers = await Session.count({
+    const activeUsers = await Session.distinct('customer', {
       logout: { $exists: false },
     });
+    const uniqueActiveUsers = activeUsers.length;
 
     const aggResult = await Session.aggregate([
       {
@@ -185,13 +186,17 @@ adminRouter.get(
       },
       {
         $addFields: {
-          activeUsers: activeUsers,
+          activeUsers: uniqueActiveUsers,
         },
       },
     ]);
 
-    const activeUsersVar = await Session.count({ logout: { $exists: false } });
-    res.send(aggResult);
+    const totalUsers = await Customer.countDocuments({});
+    res.send({
+      totalUsers,
+      activeUsers: uniqueActiveUsers,
+      averageTime: aggResult[0].avgTime,
+    });
   })
 );
 
