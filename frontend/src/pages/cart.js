@@ -151,7 +151,7 @@ const Cart = () => {
     if (!currentItem) return;
 
     //Up arrow
-    if (newQuantity > currentItem.quantity) {
+    if (newQuantity === currentItem.quantity + 1) {
       // Add item to cart
       try {
         await axios.post(
@@ -168,7 +168,7 @@ const Cart = () => {
     }
 
     //Down arrow
-    else if (newQuantity < currentItem.quantity) {
+    else if (newQuantity === currentItem.quantity - 1) {
       // Remove item from cart
       try {
         await axios.post(
@@ -215,15 +215,17 @@ const Cart = () => {
     setCartItems(updatedCartItems);
   };
 
-  const handleLoyaltyChange = (subtotal, points) => {
-    if (points >= 0 && points <= user.loyaltyPoints && subtotal >= 1) {
+  const handleLoyaltyChange = (points) => {
+    if (points >= 0 && points <= user.loyaltyPoints) {
       setLoyaltyPoints(points);
-      localStorage.setItem('loyPtsUsed', points);
     }
   };
 
   const handleCheckout = (total, loyaltyPoints) => {
     // this block needed for frontend loyalty points updating
+    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    userInfo.loyaltyPoints = userInfo.loyaltyPoints - loyaltyPoints;
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
     // end block
     // navigate({
     //   pathname: '/checkout',
@@ -309,7 +311,7 @@ const Cart = () => {
                     min="0"
                     value={loyaltyPoints}
                     onChange={(e) =>
-                      handleLoyaltyChange(subtotal, parseInt(e.target.value))
+                      handleLoyaltyChange(parseInt(e.target.value))
                     }
                     inputProps={{
                       style: { textAlign: 'right' },
