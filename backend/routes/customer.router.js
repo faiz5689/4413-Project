@@ -19,7 +19,7 @@ customerRouter.post(
         const newToken = tokenGenAndSign(customer);
         const cookieOptions = {
           expires: new Date(
-            Date.now() + process.env.JWT_COOKIE_EXPIRES * 3 * 60 * 60 * 1000
+            Date.now() + process.env.JWT_COOKIE_EXPIRES * 12 * 60 * 60 * 1000
           ),
           domain: 'localhost',
           httpOnly: true,
