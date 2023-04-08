@@ -11,6 +11,18 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Legend,
+  Bar,
+} from 'recharts';
 
 const AdminView = () => {
   const [salesReport, setSalesReport] = useState(null);
@@ -20,6 +32,7 @@ const AdminView = () => {
   const [year, setYear] = useState('');
   const API_URL = 'http://localhost:4000/api/admin';
   const userId = JSON.parse(localStorage.getItem('userInfo'))._id;
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
   const runSalesReport = async () => {
     try {
@@ -107,7 +120,7 @@ const AdminView = () => {
         onClick={runAppUsageReport}
         sx={{ marginLeft: '10px' }}
       >
-        Run Application Usage Report
+        Run App Usage Report
       </Button>
 
       {salesReport && (
@@ -147,6 +160,47 @@ const AdminView = () => {
               </Table>
             </TableContainer>
           )}
+          <>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <PieChart width={500} height={400}>
+                <Pie
+                  dataKey="revenue"
+                  data={salesReport}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  fill="#8884d8"
+                  label={(entry) => entry.item}
+                >
+                  {salesReport.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+              <BarChart
+                width={500}
+                height={400}
+                data={salesReport}
+                margin={{
+                  top: 100,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="item" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="revenue" fill="#8884d8" />
+              </BarChart>
+            </div>
+          </>
         </>
       )}
 
@@ -223,6 +277,24 @@ const AdminView = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          <>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <BarChart
+                width={600}
+                height={300}
+                data={[appUsageReport]}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="userId" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="activeUsers" fill="#82ca9d" />
+                <Bar dataKey="totalUsers" fill="#ffc658" />
+              </BarChart>
+            </div>
+          </>
         </>
       )}
     </div>
