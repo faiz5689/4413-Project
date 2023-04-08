@@ -57,12 +57,13 @@ export default class Checkout extends React.Component {
     var checkoutCounter = parseInt(localStorage.getItem('checkoutCounter'));
     e.preventDefault();
     if (checkoutCounter % 3 != 0) {
+      this.form.reset();
       alert('Order Successfully Completed!');
       window.location.href = '/';
     } else {
+      this.form.reset();
       alert('Credit Card Authorization failed');
     }
-    this.form.reset();
   };
 
   render() {

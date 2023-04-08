@@ -65,7 +65,7 @@ const AdminView = () => {
   };
 
   return (
-    <div>
+    <div style={{ margin: 'auto', width: '50%' }}>
       <style>
         {`
           h1 {
@@ -191,7 +191,7 @@ const AdminView = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>User ID</TableCell>
+                  <TableCell>Admin ID</TableCell>
                   <TableCell align="right">Average Time (hours)</TableCell>
                   <TableCell align="right">Active Users</TableCell>
                 </TableRow>

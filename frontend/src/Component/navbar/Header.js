@@ -43,9 +43,9 @@ const Header = () => {
   ];
 
   if (user) {
-    tabsList.push(
-      <Tab key="checkout" component={Link} to="/checkout" label="Checkout" />
-    );
+    // tabsList.push(
+    //    <Tab key="checkout" component={Link} to="/checkout" label="Checkout" />
+    // );
     const isUserAdmin = JSON.parse(userInfo2).isAdmin;
     if (isUserAdmin) {
       tabsList.push(
@@ -92,7 +92,12 @@ const Header = () => {
             <Icon icon="mdi:glasses" width="50" height="50" color="white" />
           </Button>
           <Tabs
-            sx={{ marginLeft: 'auto' }}
+            sx={{
+              marginLeft: 'auto',
+              // marginRight: 'auto',
+              // display: 'flex',
+              // justifyContent: 'center',
+            }}
             textColor="inherit"
             value={value}
             onChange={(e, value) => setValue(value)}
@@ -105,7 +110,7 @@ const Header = () => {
               onClick={() => setValue(false)}
               component={Link}
               to="/cart"
-              sx={{ color: 'white', marginLeft: '15%' }}
+              sx={{ color: 'white', marginLeft: '22%' }}
             >
               <ShoppingCartIcon />
             </IconButton>
@@ -147,7 +152,7 @@ const Header = () => {
                 to="/login"
                 variant="contained"
                 color="primary"
-                sx={{ marginLeft: '30%' }}
+                sx={{ marginLeft: '39%' }}
               >
                 LOGIN
               </Button>
