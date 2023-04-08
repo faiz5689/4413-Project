@@ -255,7 +255,7 @@ const Cart = () => {
   );
 
   return (
-    <div>
+    <div style={{ marginTop: '20px' }}>
       <Typography variant="h4" className={classes.title}>
         Your Cart
       </Typography>
