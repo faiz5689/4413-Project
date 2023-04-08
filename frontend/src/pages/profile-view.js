@@ -247,6 +247,12 @@ const ProfileView = () => {
               variant="contained"
               color="primary"
               type="submit"
+              sx={{
+                backgroundColor: '#7865f5',
+                '&:hover': {
+                  backgroundColor: '#4E2A84',
+                },
+              }}
             >
               Change Name
             </Button>
@@ -272,6 +278,12 @@ const ProfileView = () => {
               variant="contained"
               color="primary"
               type="submit"
+              sx={{
+                backgroundColor: '#7865f5',
+                '&:hover': {
+                  backgroundColor: '#4E2A84',
+                },
+              }}
             >
               Change Username
             </Button>
@@ -310,6 +322,12 @@ const ProfileView = () => {
               variant="contained"
               color="primary"
               type="submit"
+              sx={{
+                backgroundColor: '#7865f5',
+                '&:hover': {
+                  backgroundColor: '#4E2A84',
+                },
+              }}
             >
               Change Password
             </Button>
