@@ -54,10 +54,15 @@ export default class Checkout extends React.Component {
   };
 
   handleSubmit = async (e) => {
+    var checkoutCounter = parseInt(localStorage.getItem('checkoutCounter'));
     e.preventDefault();
-    alert('You have finished payment!');
+    if (checkoutCounter % 3 != 0) {
+      alert('Order Successfully Completed!');
+      window.location.href = '/';
+    } else {
+      alert('Credit Card Authorization failed');
+    }
     this.form.reset();
-    window.location.href = '/';
   };
 
   render() {
@@ -189,13 +194,23 @@ const handleCheckoutFunc = async () => {
   // store used loyaltyPts here, then pass them to backend
   var user = JSON.parse(localStorage.getItem('userInfo')); //gets user from localStorage
   var loyPts = localStorage.getItem('loyPtsUsed');
+  var checkoutCounter = parseInt(localStorage.getItem('checkoutCounter'));
+
   try {
-    const { data } = await axios.post(`${API_URL}/checkout/${user._id}`, {
-      loyaltyPoints: loyPts,
-    }, { withCredentials: true });
-    user.loyaltyPoints = data.loyaltyPointsTotal;
-    localStorage.setItem('userInfo', JSON.stringify(user));
-    localStorage.setItem('loyPtsUsed', 0);
+    checkoutCounter = checkoutCounter + 1; // increment the value
+    localStorage.setItem('checkoutCounter', checkoutCounter.toString());
+    if (checkoutCounter % 3 != 0) {
+      const { data } = await axios.post(
+        `${API_URL}/checkout/${user._id}`,
+        {
+          loyaltyPoints: loyPts,
+        },
+        { withCredentials: true }
+      );
+      user.loyaltyPoints = data.loyaltyPointsTotal;
+      localStorage.setItem('userInfo', JSON.stringify(user));
+      localStorage.setItem('loyPtsUsed', 0);
+    }
   } catch (error) {
     console.error('Error checking out:', error);
   }
