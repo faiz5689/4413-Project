@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '1rem',
   },
   goDown: {
-    color: '#5553b7',
+    color: '#7865f5',
     fontSize: '4rem !important',
   },
 }));

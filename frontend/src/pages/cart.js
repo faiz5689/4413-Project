@@ -14,9 +14,12 @@ import {
   TableRow,
   Paper,
   Button,
+  IconButton,
   TextField,
   Typography,
 } from '@mui/material';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 //Customer URL: Fixed file
 const API_URL = 'http://localhost:4000/api/users';
@@ -81,6 +84,12 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     //   marginTop: theme.spacing(4),
     fontSize: '1.5rem',
+  },
+  quantitycell: {
+    // width: '10%',
+  },
+  pricecell: {
+    // marginLeft: '40px',
   },
 }));
 
@@ -255,7 +264,10 @@ const Cart = () => {
           Your cart is empty
         </Typography>
       ) : (
-        <TableContainer component={Paper}>
+        <TableContainer
+          component={Paper}
+          style={{ boxShadow: 'none', marginBottom: '5%' }}
+        >
           <Table className={classes.table} aria-label="Cart Table">
             <TableHead>
               <TableRow>
@@ -270,20 +282,43 @@ const Cart = () => {
               {cartItems.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>{item.name}</TableCell>
-                  <TableCell align="right">${item.price.toFixed(2)}</TableCell>
-                  <TableCell align="right">
-                    <TextField
-                      className={classes.input}
-                      type="number"
-                      min="1"
-                      value={item.quantity}
-                      onChange={(e) =>
-                        handleQuantityChange(item.id, parseInt(e.target.value))
-                      }
-                      inputProps={{
-                        style: { textAlign: 'right' },
-                      }}
-                    />
+                  <TableCell align="right" className={classes.pricecell}>
+                    ${item.price.toFixed(2)}
+                  </TableCell>
+                  <TableCell align="right" className={classes.quantityCell}>
+                    <Box display="flex" alignItems="center">
+                      <IconButton
+                        aria-label="Decrease quantity"
+                        onClick={() =>
+                          handleQuantityChange(item.id, item.quantity - 1)
+                        }
+                        disabled={item.quantity === 1}
+                      >
+                        <RemoveCircleIcon
+                          style={{
+                            color:
+                              item.quantity === 1
+                                ? 'rgba(255, 0, 0, 0.5)'
+                                : 'red',
+                          }}
+                        />
+                      </IconButton>
+                      <Typography
+                        variant="body1"
+                        component="span"
+                        className={classes.quantity}
+                      >
+                        {item.quantity}
+                      </Typography>
+                      <IconButton
+                        aria-label="Increase quantity"
+                        onClick={() =>
+                          handleQuantityChange(item.id, item.quantity + 1)
+                        }
+                      >
+                        <AddBoxIcon style={{ color: '#228B22' }} />
+                      </IconButton>
+                    </Box>
                   </TableCell>
                   <TableCell align="right">
                     ${(item.price * item.quantity).toFixed(2)}
@@ -329,10 +364,10 @@ const Cart = () => {
               </TableRow>
               <TableRow>
                 <TableCell colSpan="3" align="right">
-                  Tax: (10%):
+                  Tax: (13%):
                 </TableCell>
                 <TableCell align="right">
-                  ${(subtotal * 0.1).toFixed(2)}
+                  ${(subtotal * 0.13).toFixed(2)}
                 </TableCell>
                 <TableCell></TableCell>
               </TableRow>
@@ -357,6 +392,12 @@ const Cart = () => {
             variant="contained"
             color="primary"
             className={classes.button}
+            sx={{
+              backgroundColor: '#7865f5',
+              '&:hover': {
+                backgroundColor: '#4E2A84',
+              },
+            }}
           >
             Browse Products
           </Button>
@@ -367,6 +408,13 @@ const Cart = () => {
             variant="contained"
             color="primary"
             className={classes.button}
+            sx={{
+              backgroundColor: '#7865f5',
+              '&:hover': {
+                backgroundColor: '#4E2A84',
+              },
+              fontSize: '1.5rem',
+            }}
             onClick={() =>
               handleCheckout(
                 subtotal * 1.1 + 0.1 * loyaltyPoints,
@@ -374,7 +422,7 @@ const Cart = () => {
               )
             }
           >
-            Checkout
+            Continue to Checkout
           </Button>
         )}
       </Box>

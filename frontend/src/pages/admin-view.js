@@ -78,7 +78,7 @@ const AdminView = () => {
   };
 
   return (
-    <div style={{ margin: 'auto', width: '50%' }}>
+    <div>
       <style>
         {`
           h1 {
@@ -103,14 +103,30 @@ const AdminView = () => {
         onChange={(e) => setYear(e.target.value)}
         sx={{ marginRight: '10px' }}
       />
-      <Button variant="contained" color="primary" onClick={runSalesReport}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={runSalesReport}
+        sx={{
+          backgroundColor: '#7865f5',
+          '&:hover': {
+            backgroundColor: '#4E2A84',
+          },
+        }}
+      >
         Run Sales Report
       </Button>
       <Button
         variant="contained"
         color="primary"
         onClick={runGeneralSalesReport}
-        sx={{ marginLeft: '10px' }}
+        sx={{
+          marginLeft: '10px',
+          backgroundColor: '#7865f5',
+          '&:hover': {
+            backgroundColor: '#4E2A84',
+          },
+        }}
       >
         Run Monthly Sales Report
       </Button>
@@ -118,7 +134,13 @@ const AdminView = () => {
         variant="contained"
         color="primary"
         onClick={runAppUsageReport}
-        sx={{ marginLeft: '10px' }}
+        sx={{
+          marginLeft: '10px',
+          backgroundColor: '#7865f5',
+          '&:hover': {
+            backgroundColor: '#4E2A84',
+          },
+        }}
       >
         Run App Usage Report
       </Button>

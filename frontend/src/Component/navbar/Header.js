@@ -94,9 +94,6 @@ const Header = () => {
           <Tabs
             sx={{
               marginLeft: 'auto',
-              // marginRight: 'auto',
-              // display: 'flex',
-              // justifyContent: 'center',
             }}
             textColor="inherit"
             value={value}
@@ -139,7 +136,13 @@ const Header = () => {
                 component={Link}
                 variant="contained"
                 color="primary"
-                sx={{ marginLeft: '5%' }}
+                sx={{
+                  backgroundColor: '#7865f5',
+                  marginLeft: '5%',
+                  '&:hover': {
+                    backgroundColor: '#4E2A84',
+                  },
+                }}
               >
                 LOGOUT
               </Button>
@@ -152,7 +155,13 @@ const Header = () => {
                 to="/login"
                 variant="contained"
                 color="primary"
-                sx={{ marginLeft: '39%' }}
+                sx={{
+                  backgroundColor: '#7865f5',
+                  marginLeft: '39%',
+                  '&:hover': {
+                    backgroundColor: '#4E2A84',
+                  },
+                }}
               >
                 LOGIN
               </Button>
@@ -162,7 +171,13 @@ const Header = () => {
                 to="/register"
                 variant="contained"
                 color="primary"
-                sx={{ marginLeft: '10px' }}
+                sx={{
+                  backgroundColor: '#7865f5',
+                  marginLeft: '10px',
+                  '&:hover': {
+                    backgroundColor: '#4E2A84',
+                  },
+                }}
               >
                 SIGN UP
               </Button>

@@ -91,7 +91,14 @@ function ContactForm({
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+          sx={{
+            mt: 3,
+            mb: 2,
+            backgroundColor: '#7865f5',
+            '&:hover': {
+              backgroundColor: '#4E2A84',
+            },
+          }}
         >
           Send Message
         </Button>
