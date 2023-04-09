@@ -94,6 +94,8 @@ const Header = () => {
           <Tabs
             sx={{
               marginLeft: 'auto',
+              flexGrow: 1,
+              paddingLeft: '30px',
             }}
             textColor="inherit"
             value={value}

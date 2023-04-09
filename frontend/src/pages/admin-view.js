@@ -146,89 +146,101 @@ const AdminView = () => {
       </Button>
 
       {salesReport && (
-        <>
-          <Typography variant="h6" sx={{ marginTop: '20px' }}>
+        <div style={{ marginBottom: '100px' }}>
+          <Typography
+            variant="h6"
+            sx={{ marginTop: '20px', marginLeft: '20px' }}
+          >
             Sales Report
           </Typography>
           {salesReport.length === 0 ? (
-            <p>There are no sales in the specified period.</p>
+            <p style={{ marginLeft: '20px' }}>
+              There are no sales in the specified period.
+            </p>
           ) : (
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Item</TableCell>
-                    <TableCell align="right">Quantity</TableCell>
-                    <TableCell align="right">Revenue ($)</TableCell>
-                    <TableCell align="right">Month</TableCell>
-                    <TableCell align="right">Year</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {salesReport.map((row) => (
-                    <TableRow key={row.item}>
-                      <TableCell component="th" scope="row">
-                        {row.item}
-                      </TableCell>
-                      <TableCell align="right">{row.quantity}</TableCell>
-                      <TableCell align="right">
-                        {row.revenue.toFixed(2)}
-                      </TableCell>
-                      <TableCell align="right">{row.month}</TableCell>
-                      <TableCell align="right">{row.year}</TableCell>
+            <>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Item</TableCell>
+                      <TableCell align="right">Quantity</TableCell>
+                      <TableCell align="right">Revenue ($)</TableCell>
+                      <TableCell align="right">Month</TableCell>
+                      <TableCell align="right">Year</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
-          <>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <PieChart width={500} height={400}>
-                <Pie
-                  dataKey="revenue"
+                  </TableHead>
+                  <TableBody>
+                    {salesReport.map((row) => (
+                      <TableRow key={row.item}>
+                        <TableCell component="th" scope="row">
+                          {row.item}
+                        </TableCell>
+                        <TableCell align="right">{row.quantity}</TableCell>
+                        <TableCell align="right">
+                          {row.revenue.toFixed(2)}
+                        </TableCell>
+                        <TableCell align="right">{row.month}</TableCell>
+                        <TableCell align="right">{row.year}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <PieChart width={500} height={400}>
+                  <Pie
+                    dataKey="revenue"
+                    data={salesReport}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    fill="#8884d8"
+                    label={(entry) => entry.item}
+                  >
+                    {salesReport.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+                <BarChart
+                  width={500}
+                  height={400}
                   data={salesReport}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  fill="#8884d8"
-                  label={(entry) => entry.item}
+                  margin={{
+                    top: 100,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
                 >
-                  {salesReport.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-              <BarChart
-                width={500}
-                height={400}
-                data={salesReport}
-                margin={{
-                  top: 100,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="item" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="revenue" fill="#8884d8" />
-              </BarChart>
-            </div>
-          </>
-        </>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="item" label={null} />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar
+                    dataKey="revenue"
+                    fill="#8884d8"
+                    label={({ name }) => name}
+                  />
+                </BarChart>
+              </div>
+            </>
+          )}
+        </div>
       )}
 
       {generalSalesReport && (
-        <>
-          <Typography variant="h6" sx={{ marginTop: '20px' }}>
+        <div style={{ marginBottom: '100px' }}>
+          <Typography
+            variant="h6"
+            sx={{ marginTop: '20px', marginLeft: '20px' }}
+          >
             General Sales Report (for the past 30 days)
           </Typography>
           <TableContainer>
@@ -255,12 +267,15 @@ const AdminView = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        </>
+        </div>
       )}
 
       {appUsageReport && (
-        <>
-          <Typography variant="h6" sx={{ marginTop: '20px' }}>
+        <div style={{ marginBottom: '100px' }}>
+          <Typography
+            variant="h6"
+            sx={{ marginTop: '20px', marginLeft: '20px' }}
+          >
             Application Usage Report
           </Typography>
           <TableContainer>
@@ -317,7 +332,7 @@ const AdminView = () => {
               </BarChart>
             </div>
           </>
-        </>
+        </div>
       )}
     </div>
   );
