@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1rem',
     padding: '0.5rem 1rem',
     '&.MuiButton-containedPrimary': {
-      backgroundColor: '#5f5fff',
+      backgroundColor: '7865f5',
       color: 'white',
     },
     '&.MuiButton-outlinedSecondary': {
@@ -254,12 +254,20 @@ const Cart = () => {
 
   return (
     <div>
-      <Typography variant="h4" className={classes.title}>
+      <Typography
+        variant="h4"
+        className={classes.title}
+        style={{ marginTop: '20px' }}
+      >
         Your Cart
       </Typography>
       {cartItems.length === 0 ? (
-        <Typography variant="body1" textAlign="center">
-          Your cart is empty
+        <Typography
+          variant="body1"
+          textAlign="center"
+          style={{ marginTop: '20px' }}
+        >
+          Your cart is currently empty.
         </Typography>
       ) : (
         <TableContainer
@@ -391,6 +399,7 @@ const Cart = () => {
             color="primary"
             className={classes.button}
             sx={{
+              marginTop: '20px',
               backgroundColor: '#7865f5',
               '&:hover': {
                 backgroundColor: '#4E2A84',
