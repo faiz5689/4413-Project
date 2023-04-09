@@ -84,3 +84,7 @@ The admin account credentials are (username: alvine, password: Alvine1!). With t
 
 When using the application on the local machine, there is a chance that the pages will not scroll and that certain pages won't open. If this happens, please delete the contents of the `frontend/node_modules/@lastcode802/glassarview/lib/components/GlassArView/index.css` (do NOT delete the file, just its contents). Kill and restart the server using `ctrl + C` and `npm start` and the application should work as intended.
 
+If `npm install` is giving errors, try using `npm install --peer-legacy-deps`, which should work without error and install all necessary dependencies.
+
+If there are any other issues, don't hesitate to reach out to any of the group members.
+
