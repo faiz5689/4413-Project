@@ -18,7 +18,7 @@ After the files are installed, the user should be able to see 2 directories (fro
 
 The frontend folder is responsible for front-end related tasks. It is important to install necessary packages to run the application. First, navigate to the 4413-Project/frontend directory in a terminal, and issue the command `npm install` to install all of the required packages and dependencies for the front-end of the application.
 
-Similarly, after this process is complete, do the same for the server side, by navigating to 4413-Project/backend directory and issuing `npm install`. Again, this will automatically install all required packages needed to run the back-end of the application.
+Similarly, after this process is complete, do the same for the server side, by navigating to `4413-Project/backend` directory and issuing `npm install`. Again, this will automatically install all required packages needed to run the back-end of the application.
 
 After the setup is complete, the user is now ready to start the app. First, navigate to the `4413-Project/backend` directory in a terminal, and run the command `node server.js`. This should start the node.js server on the application side and connect to the database.
 
