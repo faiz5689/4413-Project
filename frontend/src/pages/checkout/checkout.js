@@ -159,7 +159,7 @@ export default class Checkout extends React.Component {
                 onChange={this.handleInputChange}
                 onFocus={this.handleInputFocus}
               />
-              <small>Postal Code:</small>
+              <small style={{ marginLeft: '10px' }}>Postal Code:</small>
 
               <input
                 id="checkout-input"
