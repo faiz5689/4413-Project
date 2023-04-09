@@ -42,7 +42,7 @@ After signing up, you can log in by going to the LOGIN page.
 
 ![Screenshot 2023-04-09 at 11 25 37 AM](https://user-images.githubusercontent.com/43624414/230795154-357427ef-2bdb-4610-82a7-cd90a556fcf9.png)
 
-After signing in, for example, you can view products by going to the PRODUCTS page. You can sort by name or price, and filter by category, colour and brand. You can also apply multiple filters at the same time.
+After signing in, for example, you can view products by going to the PRODUCTS page. You can sort by name or price, and filter by category, colour and brand. You can also apply multiple filters at the same time. NOTE: JWT Authorization Tokens expire after 12 hours. Sometimes it might seem like you are logged in (in the frontend), but when you make a backend request (such as adding an item to cart, an authorization error might occur because your token is expired and your session is stale). Logout and log back in to get a new token and session.
 
 ![Screenshot 2023-04-09 at 11 26 04 AM](https://user-images.githubusercontent.com/43624414/230795161-0e3d030a-5b04-44b1-ad84-83ed0577d814.png)
 
