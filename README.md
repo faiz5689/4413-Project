@@ -24,7 +24,7 @@ After the setup is complete, the user is now ready to start the app. First, navi
 
 The server is now hosted on port `4000` on the local machine. In another terminal, navigate to the `4413-Project/frontend` directory, and run `npm start`. This will start the React app on `http://localhost:3000/`. Now, by navigating to this link, we will see the home screen of the application, and the user can now use the application.
 
-The application can be run in 2 ways. Either by using our online application deployed on Netlify and AWS (sunsationalshades.shop), or by cloning the repository from github to your local machine. If the latter approach is used, two terminals need to be opened (one for frontend, one for backend). Navigate to the frontend and backend directories, respectively and run npm install in both to install all necessary dependencies. In the first terminal - cd to the frontend directory and run npm start, in the second terminal - cd to the backend directory and run node server.js. The frontend and backend should now be running and can be accessed at `localhost:3000`.
+The application can be run in 2 ways. Either by using our online application deployed on Netlify and AWS (https://sunsationalshades.shop), or by cloning the repository from github to your local machine. If the latter approach is used, two terminals need to be opened (one for frontend, one for backend). Navigate to the frontend and backend directories, respectively and run npm install in both to install all necessary dependencies. In the first terminal - cd to the frontend directory and run npm start, in the second terminal - cd to the backend directory and run node server.js. The frontend and backend should now be running and can be accessed at `localhost:3000`.
 
 # How to use
 
@@ -74,7 +74,7 @@ In addition, you can also use and communicate with the chatbot in the bottom rig
 ![Screenshot 2023-04-09 at 11 54 37 AM](https://user-images.githubusercontent.com/43624414/230795652-7271ce62-3901-483a-a25b-e3a5a110d1bb.png)
 
 
-Finally, you can also virtually try on items - make sure to enable access to your camera when the browser prompts you for it. When your face is in focus, press the MODEL to spawn the sunglasses model. Press ADJUST to adjust your system with your mouse. IMPORTANT NOTE: When you are done, press the back button on the browser then reload the page, which will bring you back to the home page. (We have been having some problems with exiting virtual try on, and this is the safest way to do it).
+Finally, you can also virtually try on items - make sure to enable access to your camera when the browser prompts you for it. When your face is in focus, press the MODEL to spawn the sunglasses model. Press ADJUST to adjust your system with your mouse. IMPORTANT NOTE: There are some issues with the dependencies in the virtual try on feature. When you are done with try on, press the back button on the browser then reload the page, which will bring you back to the home page. (This is the safest way to do it).
 
 ![Screenshot 2023-04-09 at 12 05 34 PM](https://user-images.githubusercontent.com/43624414/230795666-23d852ba-9f89-4a2e-9b31-639d6119e73b.png)
 
@@ -82,7 +82,7 @@ The admin account credentials are (username: alvine, password: Alvine1!). With t
 
 # Troubleshooting
 
-When using the application on the local machine, there is a chance that the pages will not scroll and that certain pages won't open. If this happens, please delete the contents of the `frontend/node_modules/@lastcode802/glassarview/lib/components/GlassArView/index.css` (do NOT delete the file, just its contents). Kill and restart the server using `ctrl + C` and `npm start` and the application should work as intended.
+When using the application on the local machine, there is a chance that the pages will not scroll and that certain pages won't open. This is due to some issues with required dependencies and not our implementation. If this happens, please delete the contents of the `frontend/node_modules/@lastcode802/glassarview/lib/components/GlassArView/index.css` (do NOT delete the file, just its contents). Kill and restart the server using `ctrl + C` and `npm start` and the application should work as intended.
 
 If `npm install` is giving errors, try using `npm install --peer-legacy-deps`, which should work without error and install all necessary dependencies.
 
