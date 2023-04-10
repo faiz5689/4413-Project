@@ -382,7 +382,7 @@ const Cart = () => {
                   Total:
                 </TableCell>
                 <TableCell align="right">
-                  ${(subtotal * 1.1).toFixed(2)}
+                  ${(subtotal * 1.13).toFixed(2)}
                 </TableCell>
                 <TableCell></TableCell>
               </TableRow>
