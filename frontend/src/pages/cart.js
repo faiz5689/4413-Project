@@ -424,7 +424,7 @@ const Cart = () => {
             }}
             onClick={() =>
               handleCheckout(
-                subtotal * 1.1 + 0.1 * loyaltyPoints,
+                subtotal * 1.13 + 0.1 * loyaltyPoints,
                 loyaltyPoints
               )
             }
