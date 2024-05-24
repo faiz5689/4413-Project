@@ -12,7 +12,7 @@ NOTE: Skip this section if you are accessing the website online.
 
 Node.js is required in order to run this project, and instructions on how it can be downloaded are at the following link: https://nodejs.org/en/ . Node version can be checked by running `node -v` if already installed.
 
-To download the project locally, run `git clone https://github.com/faiz5689/4413-Project.git` in your testing directory, assuming git is installed on the user’s machine. Alternatively, download and unpack the ZIP file from the github repository.
+To download the project locally, run `(https://github.com/faiz5689/Sunsational-Shades.git)` in your testing directory, assuming git is installed on the user’s machine. Alternatively, download and unpack the ZIP file from the github repository.
 
 After the files are installed, the user should be able to see 2 directories (frontend and backend) in the `4413-Project` folder, which is the parent folder for the project.
 
